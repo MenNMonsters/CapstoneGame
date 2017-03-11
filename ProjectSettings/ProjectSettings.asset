@@ -462,8 +462,9 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Collab: 1
     UNet: 1
-  cloudProjectId: f2c169da-0f20-4e31-bffc-b746abb16f40
-  projectName: CapstoneGame
-  organizationId: da-lin
+  cloudProjectId: b68dd648-3afd-4311-bd28-ae5780f03b90
+  projectName: CapstoneGame (1)
+  organizationId: jazzis
   cloudEnabled: 0
