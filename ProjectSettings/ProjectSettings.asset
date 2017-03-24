@@ -119,7 +119,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.Company.ProductName
+  bundleIdentifier: com.cis4398.android
   bundleVersion: 1.0
   preloadedAssets: []
   metroInputSource: 0
@@ -198,8 +198,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: menandmonstersKey.keystore
+  AndroidKeyaliasName: menandmonsters
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 1
@@ -462,9 +462,9 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
     UNet: 1
-  cloudProjectId: b68dd648-3afd-4311-bd28-ae5780f03b90
+  cloudProjectId: 6d7f8f77-5638-45e4-bd14-2a253ec80684
   projectName: CapstoneGame (1)
-  organizationId: jazzis
+  organizationId: da-lin
   cloudEnabled: 0
