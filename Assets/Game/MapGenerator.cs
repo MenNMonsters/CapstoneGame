@@ -1,57 +1,71 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour {
     
     Tree map = new Tree();
-    ChangeScene changeScene = new ChangeScene();
+    //ChangeScene changeScene;
 
     public Text currentNodeText;
     public Text leftChildText;
     public Text rightChildText;
-
     public Text evenText;
 
     public Text leftChildLeftChildText;
+    
+
+    public Button leftButton;
+    public Button rightButton;
+    public Button backButton;
 
     //public Text text;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    public void Start () {
+
         createMap();
         setText();
-        //map.printTree();
-        //text.text = "Hello World";     
-        //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
-    }
 
+        Button moveLeftButton = leftButton.GetComponent<Button>();
+        //moveLeftButton.onClick.AddListener(map.traverseLeft);
+
+        Button moveRightButton = rightButton.GetComponent<Button>();
+        //moveRightButton.onClick.AddListener(map.traverseRight);
+
+        Button moveBackButton = backButton.GetComponent<Button>();        
+    }
     // Update is called once per frame
-    void Update () {
+    public void Update () {
+
+        
 
         if ((Input.GetKeyDown(KeyCode.Escape))){
-            changeScene.changeToScene(1);
+            //changeScene.changeToScene(1);
+            SceneManager.LoadScene(1);
+
         }
         
         if ((Input.GetKeyDown(KeyCode.L))||(Input.GetKeyDown(KeyCode.LeftArrow)))
         {
-            map.traverseLeft();
-            setText();
+            TraverseLeft();
+            //setText();
             //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
             //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
         }
         if ((Input.GetKeyDown(KeyCode.R)) || (Input.GetKeyDown(KeyCode.RightArrow)))
         {
-            map.traverseRight();
-            setText();
+            TraverseRight();
+            //setText();
         }
         if ((Input.GetKeyDown(KeyCode.B))||(Input.GetKeyDown(KeyCode.Space)))
         {
-            map.traverseBack();
-            setText();
+            TraverseBack();
+            //setText();
         }
     }
-    void setText()
+    public void setText()
     {
         currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
 
@@ -77,6 +91,22 @@ public class MapGenerator : MonoBehaviour {
         map.insert(59, "Ambush Fight");
         map.insert(61, "Trap");  
     }
+    public void TraverseRight()
+    {
+        map.traverseRight();
+        setText();
+    }
+    public void TraverseLeft()
+    {
+        map.traverseLeft();
+        setText();
+    }
+    public void TraverseBack()
+    {
+        map.traverseBack();
+        setText();
+    }
+    
 
     public class Tree
     {   public btNode c;
@@ -188,7 +218,6 @@ public class MapGenerator : MonoBehaviour {
         }
         public void traverseBack()
         {
-            //btNode p = pred;
             if (predStack.Count != 0)
             {
                 c = (btNode)predStack.Pop();
