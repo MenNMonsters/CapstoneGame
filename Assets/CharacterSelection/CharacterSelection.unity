@@ -121,7 +121,7 @@ RectTransform:
   m_Children:
   - {fileID: 1450216789}
   m_Father: {fileID: 264910700}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -299,9 +299,9 @@ RectTransform:
   m_Children:
   - {fileID: 1124277389}
   - {fileID: 1097572706}
-  - {fileID: 1109776607}
   - {fileID: 25615457}
   - {fileID: 1740898899}
+  - {fileID: 1109776607}
   - {fileID: 1434065172}
   - {fileID: 1414614259}
   - {fileID: 1754794583}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 1109776609}
   - component: {fileID: 1109776608}
   m_Layer: 5
-  m_Name: Wizard
+  m_Name: WizardButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -417,7 +417,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 264910700}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1174,7 +1174,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 264910700}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/Help/Help.unity
   - enabled: 1
     path: Assets/Game/Map.unity
+  - enabled: 1
+    path: Assets/Login/MainScene.unity
