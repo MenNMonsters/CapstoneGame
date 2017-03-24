@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "538922657069",
+    "firebase_url": "https://men-and-monsters.firebaseio.com",
+    "project_id": "men-and-monsters",
+    "storage_bucket": "men-and-monsters.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538922657069:android:ce579200f3ec8afc",
+        "android_client_info": {
+          "package_name": "com.cis4398.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538922657069-so28kjqgjsf89p9ib0fl7a2ps1hi6h8q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cis4398.android",
+            "certificate_hash": "09b41d9e66e1ab64cba1dbdd4e7b88d35c1d718d"
+          }
+        },
+        {
+          "client_id": "538922657069-4jfavgg4u1jcei1l28i14g63cnnuadg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjl_w7kj-D1W6bLxkEa-nXukAULheEYuU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538922657069-mvegsafk0r0pptolu4hkl5dn9pcb5tbl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.menandmonsters.ios"
+              }
+            },
+            {
+              "client_id": "538922657069-4jfavgg4u1jcei1l28i14g63cnnuadg3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
