@@ -217,6 +217,9 @@ MonoBehaviour:
   rightChildText: {fileID: 816980128}
   evenText: {fileID: 1146042590}
   leftChildLeftChildText: {fileID: 770193716}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!114 &78784003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,6 +634,9 @@ MonoBehaviour:
   rightChildText: {fileID: 816980128}
   evenText: {fileID: 1146042590}
   leftChildLeftChildText: {fileID: 770193716}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!1 &804968768
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,6 +729,9 @@ MonoBehaviour:
   rightChildText: {fileID: 78784003}
   evenText: {fileID: 1146042590}
   leftChildLeftChildText: {fileID: 770193716}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!114 &816980128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,6 +862,9 @@ MonoBehaviour:
   rightChildText: {fileID: 816980128}
   evenText: {fileID: 1146042590}
   leftChildLeftChildText: {fileID: 770193716}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!1 &1568408402
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,6 +956,9 @@ MonoBehaviour:
   rightChildText: {fileID: 816980128}
   evenText: {fileID: 1146042590}
   leftChildLeftChildText: {fileID: 770193716}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  backButton: {fileID: 0}
 --- !u!1 &1978681437
 GameObject:
   m_ObjectHideFlags: 0
