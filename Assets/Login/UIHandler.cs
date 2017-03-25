@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 // Handler for UI buttons on the scene.  Also performs some
@@ -234,8 +235,9 @@ public class UIHandler : MonoBehaviour {
 
   void HandleSigninResult(Task<Firebase.Auth.FirebaseUser> authTask) {
     EnableUI();
-    LogTaskCompletion(authTask, "Sign-in");
-  }
+    if(LogTaskCompletion(authTask, "Sign-in"))
+            SceneManager.LoadScene(1);
+    }
 
   public void ReloadUser() {
     if (user == null) {
