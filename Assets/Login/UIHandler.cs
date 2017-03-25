@@ -236,7 +236,7 @@ public class UIHandler : MonoBehaviour {
   void HandleSigninResult(Task<Firebase.Auth.FirebaseUser> authTask) {
     EnableUI();
     if(LogTaskCompletion(authTask, "Sign-in"))
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(3);
     }
 
   public void ReloadUser() {
