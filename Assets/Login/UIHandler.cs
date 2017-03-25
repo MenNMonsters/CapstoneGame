@@ -323,6 +323,7 @@ public class UIHandler : MonoBehaviour {
     if (UIEnabled) {
       controlsScrollViewVector =
           GUILayout.BeginScrollView(controlsScrollViewVector);
+	  GUILayout.Space(100);
       GUILayout.BeginVertical();
       GUILayout.BeginHorizontal();
       GUILayout.Label("Email:", GUILayout.Width(Screen.width * 0.20f));
@@ -349,30 +350,30 @@ public class UIHandler : MonoBehaviour {
       if (GUILayout.Button("Create User")) {
         CreateUser();
       }
-      if (GUILayout.Button("Sign In Anonymously")) {
+      /*if (GUILayout.Button("Sign In Anonymously")) {
         SigninAnonymously();
-      }
+      }*/
       if (GUILayout.Button("Sign In With Email")) {
         Signin();
       }
-      if (GUILayout.Button("Sign In With Credentials")) {
+      /*if (GUILayout.Button("Sign In With Credentials")) {
         SigninWithCredential();
-      }
-      if (GUILayout.Button("Reload User")) {
+      }*/
+      /*if (GUILayout.Button("Reload User")) {
         ReloadUser();
-      }
-      if (GUILayout.Button("Get User Token")) {
+      }*/
+      /*if (GUILayout.Button("Get User Token")) {
         GetUserToken();
-      }
+      }*/
       if (GUILayout.Button("Sign Out")) {
         SignOut();
       }
-      if (GUILayout.Button("Delete User")) {
+      /*if (GUILayout.Button("Delete User")) {
         DeleteUser();
-      }
-      if (GUILayout.Button("Show Providers")) {
+      }*/
+      /*if (GUILayout.Button("Show Providers")) {
         DisplayProviders();
-      }
+      }*/
       if (GUILayout.Button("Password Reset Email")) {
         SendPasswordResetEmail();
       }
@@ -400,11 +401,11 @@ public class UIHandler : MonoBehaviour {
       controlArea = new Rect(0.0f, 0.0f, Screen.width * 0.5f, Screen.height);
       logArea = new Rect(Screen.width * 0.5f, 0.0f, Screen.width * 0.5f, Screen.height);
     }
-
+	/*
     GUILayout.BeginArea(logArea);
     GUIDisplayLog();
     GUILayout.EndArea();
-
+	*/
     GUILayout.BeginArea(controlArea);
     GUIDisplayControls();
     GUILayout.EndArea();
