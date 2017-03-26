@@ -183,6 +183,7 @@ public class UIHandler : MonoBehaviour {
         DebugLog(String.Format("User Info: {0}  {1}", auth.CurrentUser.Email,
                                auth.CurrentUser.ProviderId));
         UpdateUserProfile(newDisplayName: newDisplayName);
+				SceneManager.LoadScene(3);
       }
     }
   }
@@ -323,7 +324,6 @@ public class UIHandler : MonoBehaviour {
     if (UIEnabled) {
       controlsScrollViewVector =
           GUILayout.BeginScrollView(controlsScrollViewVector);
-	  GUILayout.Space(100);
       GUILayout.BeginVertical();
       GUILayout.BeginHorizontal();
       GUILayout.Label("Email:", GUILayout.Width(Screen.width * 0.20f));
@@ -337,14 +337,14 @@ public class UIHandler : MonoBehaviour {
       password = usePasswordInput ? GUILayout.PasswordField(password, '*') :
           GUILayout.TextField(password);
       GUILayout.EndHorizontal();
-
+	/*
       GUILayout.Space(20);
 
       GUILayout.BeginHorizontal();
       GUILayout.Label("Display Name:", GUILayout.Width(Screen.width * 0.20f));
       displayName = GUILayout.TextField(displayName);
       GUILayout.EndHorizontal();
-
+	*/
       GUILayout.Space(20);
 
       if (GUILayout.Button("Create User")) {
@@ -401,11 +401,11 @@ public class UIHandler : MonoBehaviour {
       controlArea = new Rect(0.0f, 0.0f, Screen.width * 0.5f, Screen.height);
       logArea = new Rect(Screen.width * 0.5f, 0.0f, Screen.width * 0.5f, Screen.height);
     }
-	/*
+
     GUILayout.BeginArea(logArea);
     GUIDisplayLog();
     GUILayout.EndArea();
-	*/
+
     GUILayout.BeginArea(controlArea);
     GUIDisplayControls();
     GUILayout.EndArea();
