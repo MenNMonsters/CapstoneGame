@@ -85,7 +85,6 @@ PlayerSettings:
   xboxEnableFitness: 0
   visibleInBackground: 0
   allowFullscreenSwitch: 1
-  graphicsJobMode: 0
   macFullscreenMode: 2
   d3d9FullscreenMode: 1
   d3d11FullscreenMode: 1
@@ -467,7 +466,7 @@ PlayerSettings:
     ErrorHub: 0
     Hub: 0
     UNet: 1
-  cloudProjectId: 6d7f8f77-5638-45e4-bd14-2a253ec80684
+  cloudProjectId: 9a725288-b490-4d28-9b8a-59c7c5ba061f
   projectName: CapstoneGame (1)
-  organizationId: da-lin
+  organizationId: devdmaru
   cloudEnabled: 0
