@@ -1,0 +1,105 @@
+Initialize engine version: 5.5.2f1 (3829d7f588f3)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce 940M         (ID=0x1347)
+    Vendor:   NVIDIA
+    VRAM:     1996 MB
+    Driver:   21.20.16.4550
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Firebase.App.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Firebase.App.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Firebase.Auth.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Firebase.Auth.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Google.MiniJson.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Google.MiniJson.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Unity.Compat.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Unity.Compat.dll into Unity Child Domain
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Unity.Tasks.dll (this message is harmless)
+Loading C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\Unity.Tasks.dll into Unity Child Domain
+- Completed reload, in  0.141 seconds
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Jasmeet Kaur\Documents\CapstoneGame\Login_Data\Managed\System.dll (this message is harmless)
+desktop: 3200x1800 60Hz; virtual: 3600x2025 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.051551 ms
+Setting up Firebase Auth
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/App
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/.\libApp
+Fallback handler could not load library C:/Users/Jasmeet Kaur/Documents/CapstoneGame/Login_Data/Mono/libApp
+DllNotFoundException: App
+  at (wrapper managed-to-native) Firebase.AppUtilPINVOKE/SWIGExceptionHelper:SWIGRegisterExceptionCallbacks_AppUtil (Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate,Firebase.AppUtilPINVOKE/SWIGExceptionHelper/ExceptionDelegate)
+  at Firebase.AppUtilPINVOKE+SWIGExceptionHelper..cctor () [0x00000] in <filename unknown>:0 
+Rethrow as TypeInitializationException: An exception was thrown by the type initializer for SWIGExceptionHelper
+  at Firebase.AppUtilPINVOKE..cctor () [0x00000] in <filename unknown>:0 
+Rethrow as TypeInitializationException: An exception was thrown by the type initializer for Firebase.AppUtilPINVOKE
+  at Firebase.AppUtil.SetEnabledAllAppCallbacks (Boolean arg0) [0x00000] in <filename unknown>:0 
+  at Firebase.FirebaseApp+FirebaseHandler.Create () [0x00000] in <filename unknown>:0 
+  at Firebase.FirebaseApp.get_DefaultInstance () [0x00000] in <filename unknown>:0 
+  at Firebase.Auth.FirebaseAuth.get_DefaultInstance () [0x00000] in <filename unknown>:0 
+  at UIHandler.InitializeFirebase () [0x00000] in <filename unknown>:0 
+  at UIHandler.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Attempting to create user sample@gmail.com...
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at UIHandler.CreateUser () [0x00000] in <filename unknown>:0 
+  at UIHandler.GUIDisplayControls () [0x00000] in <filename unknown>:0 
+  at UIHandler.OnGUI () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 51c -> priority: 1 
+NullReferenceException: Object reference not set to an instance of an object
+  at UIHandler.OnDestroy () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
