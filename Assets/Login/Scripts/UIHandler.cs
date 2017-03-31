@@ -183,6 +183,7 @@ public class UIHandler : MonoBehaviour {
         DebugLog(String.Format("User Info: {0}  {1}", auth.CurrentUser.Email,
                                auth.CurrentUser.ProviderId));
         UpdateUserProfile(newDisplayName: newDisplayName);
+				UnityAndroidExtras.instance.makeToast("Successfuly Created User and Signed in",1);
 				SceneManager.LoadScene(3);
       }
     }
@@ -237,6 +238,7 @@ public class UIHandler : MonoBehaviour {
   void HandleSigninResult(Task<Firebase.Auth.FirebaseUser> authTask) {
     EnableUI();
     if(LogTaskCompletion(authTask, "Sign-in"))
+			UnityAndroidExtras.instance.makeToast("Signed In",1);
             SceneManager.LoadScene(3);
     }
 
@@ -395,17 +397,17 @@ public class UIHandler : MonoBehaviour {
     if (Screen.width < Screen.height) {
       // Portrait mode
       controlArea = new Rect(0.0f, 0.0f, Screen.width, Screen.height * 0.5f);
-      logArea = new Rect(0.0f, Screen.height * 0.5f, Screen.width, Screen.height * 0.5f);
+      //logArea = new Rect(0.0f, Screen.height * 0.5f, Screen.width, Screen.height * 0.5f);
     } else {
       // Landscape mode
-      controlArea = new Rect(0.0f, 0.0f, Screen.width * 0.5f, Screen.height);
-      logArea = new Rect(Screen.width * 0.5f, 0.0f, Screen.width * 0.5f, Screen.height);
+      controlArea = new Rect(0.0f, 0.0f, Screen.width, Screen.height);
+      //logArea = new Rect(Screen.width * 0.5f, 0.0f, Screen.width * 0.5f, Screen.height);
     }
-
+	/*
     GUILayout.BeginArea(logArea);
     GUIDisplayLog();
     GUILayout.EndArea();
-
+	*/
     GUILayout.BeginArea(controlArea);
     GUIDisplayControls();
     GUILayout.EndArea();
