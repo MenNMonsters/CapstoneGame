@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/MainMenu/MainMenu.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Help/Help.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Login/MainScene.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Lobby/Lobby.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game/Game.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/CharacterSelection/CharacterSelection.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game/Map.unity
   - enabled: 0
     path: Assets/Game/Scene.unity
@@ -25,3 +25,5 @@ EditorBuildSettings:
     path: Assets/Score/Score.unity
   - enabled: 0
     path: Assets/Login/UnityAndroidExtras/Demo/Scenes/Demo_build_run.unity
+  - enabled: 0
+    path: Assets/Game/Combat/Combat.unity
