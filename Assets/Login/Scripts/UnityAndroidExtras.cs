@@ -159,10 +159,11 @@ public class UnityAndroidExtras : MonoBehaviour,IWebViewListener,IAlertViewListe
 	/// <param name="bundleName">Bundle name.</param>
 	public bool isApplicationIstalled(string bundleName)
 	{
-		#if !DEBUGMODE && UNITY_ANDROID
+#if !DEBUGMODE && UNITY_ANDROID
 		using(AndroidJavaObject jo =  new AndroidJavaObject("com.nevzatarman.unityextras.UnityExtras"))
 			return jo.Call<bool>("isApplicationInstalled",bundleName);
-		#endif
+#endif
+        return true;
 	}
 	/// <summary>
 	/// Opens another application if it's installed
