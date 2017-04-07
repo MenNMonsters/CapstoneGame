@@ -13,6 +13,8 @@ public class PlayerControl : NetworkBehaviour
     const int ENEMY_HEALTH = 100;
     const int ENEMY_ENERGY = 100;
 
+    public EnemyControl enemy;
+
     private bool beingHandled = false;
 
     public enum BattleStates
@@ -37,7 +39,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnPlayerEnergyChanged")]
     private int playerEnergy;
     [SyncVar(hook = "OnEnemyHealthChanged")]
-    private int enemyHealth;
+    private int health;
     [SyncVar(hook = "OnEnemyEnergyChanged")]
     private int enemyEnergy;
 
@@ -46,6 +48,11 @@ public class PlayerControl : NetworkBehaviour
     private Text playerEnergyText;
     private Text enemyHealthText;
     private Text enemyEnergyText;
+
+    private Image enemyHealthImg;
+    private Image enemyEnergyImg;
+    private Image playerHealthImg;
+    private Image playerEnergyImg;
 
     private Transform myTransform;
 
@@ -64,9 +71,14 @@ public class PlayerControl : NetworkBehaviour
         playerEnergy = PLAYER_ENERGY;
 
         enemyHealthText = GameObject.Find("EnemyHealth").GetComponent<Text>();
-        enemyHealth = ENEMY_HEALTH;
+        health = ENEMY_HEALTH;
         enemyEnergyText = GameObject.Find("EnemyEnergy").GetComponent<Text>();
         enemyEnergy = ENEMY_ENERGY;
+
+        enemyHealthImg = GameObject.Find("EnemyHealthBar").GetComponent<Image>();
+        enemyEnergyImg = GameObject.Find("EnemyEnergyBar").GetComponent<Image>();
+        playerHealthImg = GameObject.Find("PlayerHealthBar").GetComponent<Image>();
+        playerEnergyImg = GameObject.Find("PlayerEnergyBar").GetComponent<Image>();
 
         currentState = BattleStates.PLAYERCHOICE;
 
@@ -83,11 +95,21 @@ public class PlayerControl : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(myTransform.name == "" || myTransform.name == "Player(Clone)")
+
+        //Debug.Log(EnemyControl.health);
+
+        enemyHealthText.text = enemy.health.ToString();
+        enemyHealthImg.fillAmount = (float)(enemy.health) / 100f;
+        enemyEnergyImg.fillAmount = (float)(enemy.health) / 100f;
+        playerHealthImg.fillAmount = (float)(enemy.health) / 100f;
+        playerEnergyImg.fillAmount = (float)(enemy.health) / 100f;
+
+        if (myTransform.name == "" || myTransform.name == "Player(Clone)")
         {
             SetIdentity();
         }
     }
+
 
     [Client]
     void GetNetIdentity()
@@ -123,8 +145,8 @@ public class PlayerControl : NetworkBehaviour
 
     void OnGUI()
     {
-        
-        if (isServer)
+
+        if (isLocalPlayer)
         {
             if (GUI.Button(new Rect(Screen.width * (1f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
             {
@@ -138,10 +160,16 @@ public class PlayerControl : NetworkBehaviour
             {
                 if (currentState == BattleStates.PLAYERCHOICE)
                 {
-                    enemyHealth -= 10;
-                    if (enemyHealth <= 0)
+                    if (!isServer)
                     {
-                        enemyHealth = 0;
+                        CmdOnHealthChanged(10);
+                        enemy.health -= 10;
+                    }
+                    if (isServer)
+                        RpcOnHealthChanged(10);
+                    if (health <= 0)
+                    {
+                        enemy.health = 0;
                         currentState = BattleStates.WIN;
                     }
                     else
@@ -158,15 +186,15 @@ public class PlayerControl : NetworkBehaviour
                 {
                     if (playerEnergy >= PLAYER_MAGIC_CONSUME)
                     {
-                        enemyHealth -= 20;
+                        enemy.TakeDamage(20);
                         playerEnergy -= 20;
                         if (playerEnergy < 0)
                         {
                             playerEnergy = 0;
                         }
-                        if (enemyHealth <= 0)
+                        if (enemy.health <= 0)
                         {
-                            enemyHealth = 0;
+                            enemy.health = 0;
                             currentState = BattleStates.WIN;
                         }
                         else
@@ -210,12 +238,18 @@ public class PlayerControl : NetworkBehaviour
 
         if (State == 1)
         {
-            if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
+            if (EnemyControl.energy >= ENEMY_MAGIC_CONSUME)
             {
                 turn = "Eenmy uses magical attack";
 
                 playerHealth -= 20;
-                enemyEnergy -= ENEMY_MAGIC_CONSUME;
+                if (!isServer) { 
+                    enemyEnergy -= ENEMY_MAGIC_CONSUME;
+                    CmdOnEnergyChanged(ENEMY_MAGIC_CONSUME);
+                }else
+                {
+                    RpcOnEnergyChanged(ENEMY_MAGIC_CONSUME);
+                }
                 if (enemyEnergy <= 0)
                 {
                     enemyEnergy = 0;
@@ -248,16 +282,38 @@ public class PlayerControl : NetworkBehaviour
     void CmdOnTurnChanged(string turn)
     {
         this.turn = turn;
-        Debug.Log(turn); 
+        //Debug.Log(turn); 
         turnText.text = turn;
+    }
+
+    [Command]
+    void CmdOnHealthChanged(int dmg)
+    {
+        enemy.health -= dmg;
+    }
+
+    [ClientRpc]
+    void RpcOnHealthChanged(int dmg)
+    {
+        enemy.health -= dmg;
+    }
+
+    [Command]
+    void CmdOnEnergyChanged(int dmg)
+    {
+        EnemyControl.energy -= dmg;
+    }
+
+    [ClientRpc]
+    void RpcOnEnergyChanged(int dmg)
+    {
+        EnemyControl.energy -= dmg;
     }
 
     void OnTurnChanged(string turn)
     {
         this.turn = turn;
-
-        if (isLocalPlayer) { Debug.Log(turn); }
-            turnText.text = turn;
+        turnText.text = turn;
     }
 
     void OnPlayerHealthChanged(int value)
@@ -276,9 +332,9 @@ public class PlayerControl : NetworkBehaviour
 
     void OnEnemyHealthChanged(int value)
     {
-        enemyHealth = value;
+        health = value;
 
-        enemyHealthText.text = enemyHealth.ToString();
+        enemyHealthText.text = health.ToString();
     }
 
     void OnEnemyEnergyChanged(int value)

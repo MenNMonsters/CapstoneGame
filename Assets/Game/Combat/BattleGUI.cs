@@ -246,7 +246,7 @@ public class BattleGUI : NetworkBehaviour
     //public void CmdChangeEnemyHealthText()
     //{
 
-    //    enemyHealthText.text = enemyHealth.ToString();
+    //    enemyHealthText.text = health.ToString();
     //}
 
     //[Command]
