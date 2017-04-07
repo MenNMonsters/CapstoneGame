@@ -1,71 +1,77 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour {
     
     Tree map = new Tree();
-    //ChangeScene changeScene;
+
 
     public Text currentNodeText;
     public Text leftChildText;
     public Text rightChildText;
+
     public Text evenText;
 
-    public Text leftChildLeftChildText;
-    
+    private GameObject currentTile;
+    public GameObject player;
+    private GridController currentTileController;
 
-    public Button leftButton;
-    public Button rightButton;
-    public Button backButton;
+    //public Text leftChildLeftChildText;
 
     //public Text text;
 
-    // Use this for initialization
-    public void Start () {
-
+	// Use this for initialization
+	void Start () {
         createMap();
         setText();
-
-        Button moveLeftButton = leftButton.GetComponent<Button>();
-        //moveLeftButton.onClick.AddListener(map.traverseLeft);
-
-        Button moveRightButton = rightButton.GetComponent<Button>();
-        //moveRightButton.onClick.AddListener(map.traverseRight);
-
-        Button moveBackButton = backButton.GetComponent<Button>();        
+        //map.printTree();
+        //text.text = "Hello World";     
+        //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
     }
+
     // Update is called once per frame
-    public void Update () {
-
+    void Update () {
         
-
-        if ((Input.GetKeyDown(KeyCode.Escape))){
-            //changeScene.changeToScene(1);
-            SceneManager.LoadScene(1);
-
-        }
         
-        if ((Input.GetKeyDown(KeyCode.L))||(Input.GetKeyDown(KeyCode.LeftArrow)))
+        if ((Input.GetKeyDown(KeyCode.L)))//||(Input.GetKeyDown(KeyCode.LeftArrow)))
         {
-            TraverseLeft();
+            moveLeft();
+            //map.traverseLeft();
             //setText();
             //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
             //currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
         }
-        if ((Input.GetKeyDown(KeyCode.R)) || (Input.GetKeyDown(KeyCode.RightArrow)))
+        if ((Input.GetKeyDown(KeyCode.R))) //|| (Input.GetKeyDown(KeyCode.RightArrow)))
         {
-            TraverseRight();
+            moveRight();
+            //map.traverseRight();
             //setText();
         }
-        if ((Input.GetKeyDown(KeyCode.B))||(Input.GetKeyDown(KeyCode.Space)))
+        if ((Input.GetKeyDown(KeyCode.B)))//||(Input.GetKeyDown(KeyCode.Space)))
         {
-            TraverseBack();
+            moveBack();
+            //map.traverseBack();
             //setText();
         }
     }
-    public void setText()
+    public void moveLeft()
+    {
+        map.traverseLeft();
+        setText();
+    }
+    public void moveRight()
+    {
+        map.traverseRight();
+        setText();
+    }
+    public void moveBack()
+    {
+        map.traverseBack();
+        setText();
+    }
+
+    void setText()
     {
         currentNodeText.text = "Current Node ID: " + map.getCurrentNodeId();
 
@@ -73,7 +79,7 @@ public class MapGenerator : MonoBehaviour {
 
         leftChildText.text = "Left Child ID: " + map.getLeftChildId();
         rightChildText.text = "Right Child ID: " + map.getRightChildId();
-        leftChildLeftChildText.text = "Left Child's Left Child ID: " + map.getLeftChildLeftChildId();
+        //leftChildLeftChildText.text = "Left Child's Left Child ID: " + map.getLeftChildLeftChildId();
     }
 
     public void createMap()
@@ -91,22 +97,19 @@ public class MapGenerator : MonoBehaviour {
         map.insert(59, "Ambush Fight");
         map.insert(61, "Trap");  
     }
-    public void TraverseRight()
+
+    public int getLeftChild()
     {
-        map.traverseRight();
-        setText();
+        return map.getLeftChildId();
     }
-    public void TraverseLeft()
+    public int getRightChild()
     {
-        map.traverseLeft();
-        setText();
+        return map.getRightChildId();
     }
-    public void TraverseBack()
+    public int getParent()
     {
-        map.traverseBack();
-        setText();
+        return map.getParentExists();
     }
-    
 
     public class Tree
     {   public btNode c;
@@ -194,7 +197,10 @@ public class MapGenerator : MonoBehaviour {
         {
             return c.randomEvent;
         }
-
+        public int getParentExists()
+        {
+            return predStack.Count;
+        }
 //TRAVERSAL METHODS
         public void traverseLeft()
         {
@@ -203,7 +209,6 @@ public class MapGenerator : MonoBehaviour {
             {
                 c = c.left;
                 predStack.Push(p);
-                //pred = p;
             }
         }
         public void traverseRight()
@@ -213,7 +218,6 @@ public class MapGenerator : MonoBehaviour {
             {
                 c = c.right;
                 predStack.Push(p);
-                //pred = p;
             }
         }
         public void traverseBack()
