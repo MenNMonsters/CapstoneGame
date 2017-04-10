@@ -45,12 +45,16 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar]
     public int numOfPlayer;
 
+    [SyncVar(hook = "OnPlayerName")]
+    public string pName;
+
     private Text turnText;
     private Text playerHealthText;
     private Text playerEnergyText;
     private Text enemyHealthText;
     private Text enemyEnergyText;
     private Text playerNameText;
+    private Text PlayerPortraitText;
 
     private Image playerHealthImage;
     private Image playerEnergyImage;
@@ -97,11 +101,17 @@ public class PlayerControl : NetworkBehaviour
                 }
             }
 
+            Debug.Log(pName);
 
             playerNameText = GameObject.Find("Name").GetComponent<Text>();
             if (playerNameText != null)
-                playerNameText.text = "You are Player" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer);
+                playerNameText.text = "You are " + pName;
         }
+
+        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        PlayerPortraitText.text = pName;
+
+        OnPlayerName(pName);
 
         //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
         //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
@@ -109,17 +119,21 @@ public class PlayerControl : NetworkBehaviour
         //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
         //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
+
+
         playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
         playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
         playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
         playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
         turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        turn = pName + ":Your Turn";
+        OnTurnChanged(turn);
 
         playerHealth = PLAYER_HEALTH;
         playerEnergy = PLAYER_ENERGY;
 
 
-        turn = "Your Turn";
+
         enemyHealthText = GameObject.Find("EnemyHealth").GetComponent<Text>();
         enemyHealth = ENEMY_HEALTH;
         enemyEnergyText = GameObject.Find("EnemyEnergy").GetComponent<Text>();
@@ -324,20 +338,20 @@ public class PlayerControl : NetworkBehaviour
         beingHandled = true;
         if (normal)
         {
-            turn = "normal attack!";
+            turn = pName + ":normal attack!";
         }
         else if (magic)
         {
-            turn = "magical attack!";
+            turn = pName + ":magical attack!";
         }
         else
         {
-            turn = "pass turn";
+            turn = pName + ":pass turn";
         }
         CmdOnTurnChanged(turn);
         yield return new WaitForSeconds(1);
 
-        turn = "Enemy Turn";
+        turn = pName + ":Enemy Turn";
         CmdOnTurnChanged(turn);
         int State = Random.Range(0, 2);
         yield return new WaitForSeconds(1);
@@ -346,7 +360,7 @@ public class PlayerControl : NetworkBehaviour
         {
             if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
             {
-                turn = "Eenmy uses magical attack";
+                turn = pName + ":Eenmy uses magical attack";
 
                 CmdOnPlayerHealthChanged(20);
                 CmdOnEnemyEnergyChanged(ENEMY_MAGIC_CONSUME);
@@ -358,7 +372,7 @@ public class PlayerControl : NetworkBehaviour
         }
         else
         {
-            turn = "Eenmy uses normal attack";
+            turn = pName + ":Eenmy uses normal attack";
             CmdOnPlayerHealthChanged(5);
         }
         CmdOnTurnChanged(turn);
@@ -374,7 +388,7 @@ public class PlayerControl : NetworkBehaviour
         }
 
         beingHandled = false;
-        turn = "Your Turn";
+        turn = pName + ":Your Turn";
         CmdOnTurnChanged(turn);
     }
 
@@ -423,6 +437,14 @@ public class PlayerControl : NetworkBehaviour
         playerHealth = value;
 
         playerHealthText.text = playerHealth.ToString();
+    }
+
+    void OnPlayerName(string value)
+    {
+        pName = value;
+
+        if (PlayerPortraitText != null)
+            PlayerPortraitText.text = pName.ToString();
     }
 
     void OnPlayerEnergyChanged(int value)
