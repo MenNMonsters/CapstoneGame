@@ -178,10 +178,10 @@ public class PlayerControl : NetworkBehaviour
             p4Enabled = true;
         }
 
-        playerHealthImage.fillAmount = (float)playerHealth / 100f;
-        playerEnergyImage.fillAmount = (float)playerEnergy / 100f;
-        enemyHealthImage.fillAmount = (float)enemyHealth / 100f;
-        enemyEnergyImage.fillAmount = (float)enemyEnergy / 100f;
+        playerHealthImage.fillAmount = (float)playerHealth / PLAYER_HEALTH;
+        playerEnergyImage.fillAmount = (float)playerEnergy / PLAYER_ENERGY;
+        enemyHealthImage.fillAmount = (float)enemyHealth / ENEMY_HEALTH;
+        enemyEnergyImage.fillAmount = (float)enemyEnergy / ENEMY_ENERGY;
 
 
 
