@@ -425,7 +425,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: m_PlayScene
-      value: Game
+      value: Combat
       objectReference: {fileID: 0}
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: m_MaxPlayersPerConnection
@@ -438,11 +438,11 @@ Prefab:
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: m_GamePlayerPrefab
       value: 
-      objectReference: {fileID: 1236952072742118, guid: cc45828e0dc205142886c676ad890832,
+      objectReference: {fileID: 1720530739027630, guid: 68b5dc68d3b38c140ae195124022ea80,
         type: 2}
     - target: {fileID: 11475086, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: m_MinPlayers
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11478224, guid: c0978251ff7b10d4fb954a4b56acd9f0, type: 2}
       propertyPath: inputField

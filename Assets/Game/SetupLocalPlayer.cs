@@ -19,8 +19,8 @@ public class SetupLocalPlayer : NetworkBehaviour {
 
     void Start () {
 
-        this.GetComponentInChildren<TextMesh>().text = pname;
-        GetComponent<Renderer>().material.color = playerColor;
+        //this.GetComponentInChildren<TextMesh>().text = pname;
+        //GetComponent<Renderer>().material.color = playerColor;
     }
 
      void Update()

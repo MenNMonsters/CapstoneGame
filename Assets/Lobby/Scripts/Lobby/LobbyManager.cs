@@ -41,7 +41,7 @@ namespace Prototype.NetworkLobby
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
         [HideInInspector]
-        public int _playerNumber = 0;
+        public static int _playerNumber = 0;
 
         //used to disconnect a client properly when exiting the matchmaker
         [HideInInspector]

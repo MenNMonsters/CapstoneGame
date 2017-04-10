@@ -42,13 +42,15 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnEnemyEnergyChanged")]
     private int enemyEnergy;
 
-    private int numOfPlayer;
+    [SyncVar]
+    public int numOfPlayer;
 
     private Text turnText;
     private Text playerHealthText;
     private Text playerEnergyText;
     private Text enemyHealthText;
     private Text enemyEnergyText;
+    private Text playerNameText;
 
     private Image playerHealthImage;
     private Image playerEnergyImage;
@@ -57,19 +59,15 @@ public class PlayerControl : NetworkBehaviour
 
     private Transform myTransform;
 
-    public Texture2D bgImage;
-    public Texture2D fgImage;
-
+    GameObject p2;
     GameObject p3;
     GameObject p4;
 
+    bool p2Enabled = false;
     bool p3Enabled = false;
     bool p4Enabled = false;
     bool normal = false;
     bool magic = false;
-
-    public NetworkView nView;
-
 
     private void Awake()
     {
@@ -79,34 +77,54 @@ public class PlayerControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        nView = GetComponent<NetworkView>();
-
-        playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-        playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-        playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-        playerHealth = PLAYER_HEALTH;
-        playerEnergy = PLAYER_ENERGY;
-
-        turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-        turn = "Your Turn";
-
-
+        Debug.Log(numOfPlayer);
+        p2 = GameObject.Find("PlayerInfoContainer2");
         p3 = GameObject.Find("PlayerInfoContainer3");
         p4 = GameObject.Find("PlayerInfoContainer4");
 
+        if (isLocalPlayer)
+        {
+            if (numOfPlayer < 4)
+            {
+                p4.SetActive(false);
+                if (numOfPlayer < 3)
+                {
+                    p3.SetActive(false);
+                    if (numOfPlayer < 2)
+                    {
+                        p2.SetActive(false);
+                    }
+                }
+            }
+        }
+
+        playerNameText = GameObject.Find("Name").GetComponent<Text>();
+        if (playerNameText != null)
+            playerNameText.text = "You are Player" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer);
+
+        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+
+        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+
+        playerHealth = PLAYER_HEALTH;
+        playerEnergy = PLAYER_ENERGY;
+
+
+        turn = "Your Turn";
         enemyHealthText = GameObject.Find("EnemyHealth").GetComponent<Text>();
         enemyHealth = ENEMY_HEALTH;
         enemyEnergyText = GameObject.Find("EnemyEnergy").GetComponent<Text>();
         enemyEnergy = ENEMY_ENERGY;
         enemyHealthImage = GameObject.Find("EnemyHealthBar").GetComponent<Image>();
         enemyEnergyImage = GameObject.Find("EnemyEnergyBar").GetComponent<Image>();
-
-        if (isLocalPlayer)
-        {
-            p3.SetActive(false);
-            p4.SetActive(false);
-        }
         currentState = BattleStates.PLAYERCHOICE;
 
     }
@@ -121,12 +139,29 @@ public class PlayerControl : NetworkBehaviour
     void Update()
     {
 
-        if (isServer)
+        //if (isServer)
+        //{
+        //    if (!p3Enabled || !p4Enabled)
+        //        RpcOnNumOfPlayerChanged(NetworkServer.connections.Count);
+        //}
+
+        if (p2 != null && !p2Enabled && numOfPlayer == 2)
         {
-            if (!p3Enabled || !p4Enabled)
-                RpcOnNumOfPlayerChanged(NetworkServer.connections.Count);
+            p2.SetActive(true);
+            p2Enabled = true;
         }
 
+        if (p3 != null && !p3Enabled && numOfPlayer == 3)
+        {
+            p3.SetActive(true);
+            p3Enabled = true;
+        }
+
+        if (p4 != null && !p4Enabled && numOfPlayer == 4)
+        {
+            p4.SetActive(true);
+            p4Enabled = true;
+        }
 
         playerHealthImage.fillAmount = (float)playerHealth / 100f;
         playerEnergyImage.fillAmount = (float)playerEnergy / 100f;
@@ -146,6 +181,12 @@ public class PlayerControl : NetworkBehaviour
     void RpcOnNumOfPlayerChanged(int value)
     {
         numOfPlayer = value;
+        if (p2 != null && !p2Enabled && numOfPlayer == 2)
+        {
+            //p2.SetActive(true);
+            p2Enabled = true;
+        }
+
         if (p3 != null && !p3Enabled && numOfPlayer == 3)
         {
             p3.SetActive(true);
@@ -283,10 +324,12 @@ public class PlayerControl : NetworkBehaviour
         if (normal)
         {
             turn = "normal attack!";
-        }else if (magic)
+        }
+        else if (magic)
         {
             turn = "magical attack!";
-        }else
+        }
+        else
         {
             turn = "pass turn";
         }
@@ -344,7 +387,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdOnPlayerHealthChanged(int value)
     {
-        playerHealth -= value;  
+        playerHealth -= value;
     }
 
     [Command]
