@@ -91,7 +91,7 @@ namespace Prototype.NetworkLobby
 
             for (int i = 0; i < matches.Count; ++i)
             {
-                if (string.Equals(inputField.text, matches[i].name, System.StringComparison.OrdinalIgnoreCase))
+                if (inputField.text.Equals(matches[i].name))
                 {
                     GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
