@@ -10,10 +10,9 @@ public class PlayerControl : NetworkBehaviour
     const int PLAYER_MAGIC_CONSUME = 20;
     const int PLAYER_HEALTH = 100;
     const int PLAYER_ENERGY = 100;
-    const int ENEMY_HEALTH = 100;
-    const int ENEMY_ENERGY = 100;
+    const int ENEMY_HEALTH = 300;
+    const int ENEMY_ENERGY = 300;
 
-    public EnemyControl enemy;
 
     private bool beingHandled = false;
 
@@ -39,9 +38,11 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnPlayerEnergyChanged")]
     private int playerEnergy;
     [SyncVar(hook = "OnEnemyHealthChanged")]
-    private int health;
+    private int enemyHealth;
     [SyncVar(hook = "OnEnemyEnergyChanged")]
     private int enemyEnergy;
+
+    private int numOfPlayer;
 
     private Text turnText;
     private Text playerHealthText;
@@ -49,12 +50,26 @@ public class PlayerControl : NetworkBehaviour
     private Text enemyHealthText;
     private Text enemyEnergyText;
 
-    private Image enemyHealthImg;
-    private Image enemyEnergyImg;
-    private Image playerHealthImg;
-    private Image playerEnergyImg;
+    private Image playerHealthImage;
+    private Image playerEnergyImage;
+    private Image enemyHealthImage;
+    private Image enemyEnergyImage;
 
     private Transform myTransform;
+
+    public Texture2D bgImage;
+    public Texture2D fgImage;
+
+    GameObject p3;
+    GameObject p4;
+
+    bool p3Enabled = false;
+    bool p4Enabled = false;
+    bool normal = false;
+    bool magic = false;
+
+    public NetworkView nView;
+
 
     private void Awake()
     {
@@ -64,25 +79,35 @@ public class PlayerControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        turnText = GameObject.Find("Turn").GetComponent<Text>();
-        playerHealthText = GameObject.Find("PlayerHealth").GetComponent<Text>();
+        nView = GetComponent<NetworkView>();
+
+        playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
         playerHealth = PLAYER_HEALTH;
-        playerEnergyText = GameObject.Find("PlayerEnergy").GetComponent<Text>();
         playerEnergy = PLAYER_ENERGY;
 
+        turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        turn = "Your Turn";
+
+
+        p3 = GameObject.Find("PlayerInfoContainer3");
+        p4 = GameObject.Find("PlayerInfoContainer4");
+
         enemyHealthText = GameObject.Find("EnemyHealth").GetComponent<Text>();
-        health = ENEMY_HEALTH;
+        enemyHealth = ENEMY_HEALTH;
         enemyEnergyText = GameObject.Find("EnemyEnergy").GetComponent<Text>();
         enemyEnergy = ENEMY_ENERGY;
+        enemyHealthImage = GameObject.Find("EnemyHealthBar").GetComponent<Image>();
+        enemyEnergyImage = GameObject.Find("EnemyEnergyBar").GetComponent<Image>();
 
-        enemyHealthImg = GameObject.Find("EnemyHealthBar").GetComponent<Image>();
-        enemyEnergyImg = GameObject.Find("EnemyEnergyBar").GetComponent<Image>();
-        playerHealthImg = GameObject.Find("PlayerHealthBar").GetComponent<Image>();
-        playerEnergyImg = GameObject.Find("PlayerEnergyBar").GetComponent<Image>();
-
+        if (isLocalPlayer)
+        {
+            p3.SetActive(false);
+            p4.SetActive(false);
+        }
         currentState = BattleStates.PLAYERCHOICE;
-
-        turn = "Your Turn";
 
     }
 
@@ -96,13 +121,20 @@ public class PlayerControl : NetworkBehaviour
     void Update()
     {
 
-        //Debug.Log(EnemyControl.health);
+        if (isServer)
+        {
+            if (!p3Enabled || !p4Enabled)
+                RpcOnNumOfPlayerChanged(NetworkServer.connections.Count);
+        }
 
-        enemyHealthText.text = enemy.health.ToString();
-        enemyHealthImg.fillAmount = (float)(enemy.health) / 100f;
-        enemyEnergyImg.fillAmount = (float)(enemy.health) / 100f;
-        playerHealthImg.fillAmount = (float)(enemy.health) / 100f;
-        playerEnergyImg.fillAmount = (float)(enemy.health) / 100f;
+
+        playerHealthImage.fillAmount = (float)playerHealth / 100f;
+        playerEnergyImage.fillAmount = (float)playerEnergy / 100f;
+        enemyHealthImage.fillAmount = (float)enemyHealth / 100f;
+        enemyEnergyImage.fillAmount = (float)enemyEnergy / 100f;
+
+
+
 
         if (myTransform.name == "" || myTransform.name == "Player(Clone)")
         {
@@ -110,6 +142,22 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    void RpcOnNumOfPlayerChanged(int value)
+    {
+        numOfPlayer = value;
+        if (p3 != null && !p3Enabled && numOfPlayer == 3)
+        {
+            p3.SetActive(true);
+            p3Enabled = true;
+        }
+
+        if (p4 != null && !p4Enabled && numOfPlayer == 4)
+        {
+            p4.SetActive(true);
+            p4Enabled = true;
+        }
+    }
 
     [Client]
     void GetNetIdentity()
@@ -140,15 +188,20 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdTellServerMyIdentity(string name)
     {
+
         playerUniqueIdentity = name;
     }
+
 
     void OnGUI()
     {
 
         if (isLocalPlayer)
         {
-            if (GUI.Button(new Rect(Screen.width * (1f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
+            normal = false;
+            magic = false;
+
+            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
             {
                 if (currentState != BattleStates.LOSE && currentState != BattleStates.WIN && currentState == BattleStates.PLAYERCHOICE)
                 {
@@ -156,20 +209,15 @@ public class PlayerControl : NetworkBehaviour
                 }
             }
 
-            if (GUI.Button(new Rect(Screen.width * (1f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL"))
+            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL"))
             {
                 if (currentState == BattleStates.PLAYERCHOICE)
                 {
-                    if (!isServer)
+                    normal = true;
+                    CmdOnEnemyHealthChanged(10);
+                    if (enemyHealth <= 0)
                     {
-                        CmdOnHealthChanged(10);
-                        enemy.health -= 10;
-                    }
-                    if (isServer)
-                        RpcOnHealthChanged(10);
-                    if (health <= 0)
-                    {
-                        enemy.health = 0;
+                        enemyHealth = 0;
                         currentState = BattleStates.WIN;
                     }
                     else
@@ -180,21 +228,22 @@ public class PlayerControl : NetworkBehaviour
                 }
             }
 
-            if (GUI.Button(new Rect(Screen.width * (1f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical"))
+            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical"))
             {
                 if (currentState == BattleStates.PLAYERCHOICE)
                 {
+                    magic = true;
                     if (playerEnergy >= PLAYER_MAGIC_CONSUME)
                     {
-                        enemy.TakeDamage(20);
-                        playerEnergy -= 20;
+                        CmdOnEnemyHealthChanged(20);
+                        CmdOnPlayerEnergyChanged(20);
                         if (playerEnergy < 0)
                         {
                             playerEnergy = 0;
                         }
-                        if (enemy.health <= 0)
+                        if (enemyHealth <= 0)
                         {
-                            enemy.health = 0;
+                            enemyHealth = 0;
                             currentState = BattleStates.WIN;
                         }
                         else
@@ -230,26 +279,33 @@ public class PlayerControl : NetworkBehaviour
 
     IEnumerator enemyTurn()
     {
+        beingHandled = true;
+        if (normal)
+        {
+            turn = "normal attack!";
+        }else if (magic)
+        {
+            turn = "magical attack!";
+        }else
+        {
+            turn = "pass turn";
+        }
+        CmdOnTurnChanged(turn);
+        yield return new WaitForSeconds(1);
+
         turn = "Enemy Turn";
         CmdOnTurnChanged(turn);
         int State = Random.Range(0, 2);
-        beingHandled = true;
         yield return new WaitForSeconds(1);
 
         if (State == 1)
         {
-            if (EnemyControl.energy >= ENEMY_MAGIC_CONSUME)
+            if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
             {
                 turn = "Eenmy uses magical attack";
 
-                playerHealth -= 20;
-                if (!isServer) { 
-                    enemyEnergy -= ENEMY_MAGIC_CONSUME;
-                    CmdOnEnergyChanged(ENEMY_MAGIC_CONSUME);
-                }else
-                {
-                    RpcOnEnergyChanged(ENEMY_MAGIC_CONSUME);
-                }
+                CmdOnPlayerHealthChanged(20);
+                CmdOnEnemyEnergyChanged(ENEMY_MAGIC_CONSUME);
                 if (enemyEnergy <= 0)
                 {
                     enemyEnergy = 0;
@@ -259,7 +315,7 @@ public class PlayerControl : NetworkBehaviour
         else
         {
             turn = "Eenmy uses normal attack";
-            playerHealth -= 5;
+            CmdOnPlayerHealthChanged(5);
         }
         CmdOnTurnChanged(turn);
         yield return new WaitForSeconds(1);
@@ -282,37 +338,39 @@ public class PlayerControl : NetworkBehaviour
     void CmdOnTurnChanged(string turn)
     {
         this.turn = turn;
-        //Debug.Log(turn); 
         turnText.text = turn;
     }
 
     [Command]
-    void CmdOnHealthChanged(int dmg)
+    void CmdOnPlayerHealthChanged(int value)
     {
-        enemy.health -= dmg;
-    }
-
-    [ClientRpc]
-    void RpcOnHealthChanged(int dmg)
-    {
-        enemy.health -= dmg;
+        playerHealth -= value;  
     }
 
     [Command]
-    void CmdOnEnergyChanged(int dmg)
+    void CmdOnPlayerEnergyChanged(int value)
     {
-        EnemyControl.energy -= dmg;
+        playerEnergy -= value;
     }
 
-    [ClientRpc]
-    void RpcOnEnergyChanged(int dmg)
+    [Command]
+    void CmdOnEnemyHealthChanged(int value)
     {
-        EnemyControl.energy -= dmg;
+        enemyHealth = int.Parse(enemyHealthText.text);
+        enemyHealth -= value;
     }
 
-    void OnTurnChanged(string turn)
+    [Command]
+    void CmdOnEnemyEnergyChanged(int value)
     {
-        this.turn = turn;
+        enemyEnergy = int.Parse(enemyEnergyText.text);
+        enemyEnergy -= value;
+    }
+
+    void OnTurnChanged(string value)
+    {
+        turn = value;
+
         turnText.text = turn;
     }
 
@@ -332,9 +390,9 @@ public class PlayerControl : NetworkBehaviour
 
     void OnEnemyHealthChanged(int value)
     {
-        health = value;
+        enemyHealth = value;
 
-        enemyHealthText.text = health.ToString();
+        enemyHealthText.text = enemyHealth.ToString();
     }
 
     void OnEnemyEnergyChanged(int value)
