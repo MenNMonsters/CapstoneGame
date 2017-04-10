@@ -96,11 +96,12 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
             }
-        }
 
-        playerNameText = GameObject.Find("Name").GetComponent<Text>();
-        if (playerNameText != null)
-            playerNameText.text = "You are Player" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer);
+
+            playerNameText = GameObject.Find("Name").GetComponent<Text>();
+            if (playerNameText != null)
+                playerNameText.text = "You are Player" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer);
+        }
 
         //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
         //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
