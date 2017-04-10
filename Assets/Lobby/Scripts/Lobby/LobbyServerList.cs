@@ -21,10 +21,15 @@ namespace Prototype.NetworkLobby
         static Color OddServerColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         static Color EvenServerColor = new Color(.94f, .94f, .94f, 1.0f);
 
+        public InputField filterInputField;
+
         void OnEnable()
         {
             currentPage = 0;
             previousPage = 0;
+
+            filterInputField.onEndEdit.RemoveAllListeners();
+            filterInputField.onEndEdit.AddListener(onEndEditField);
 
             foreach (Transform t in serverListRect)
                 Destroy(t.gameObject);
@@ -62,6 +67,22 @@ namespace Prototype.NetworkLobby
             }
         }
 
+        public void OnGUIMatchFilteredList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
+        {
+            for (int i = 0; i < matches.Count; ++i)
+            {
+                if (string.Equals(filterInputField.text, matches[i].name, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    GameObject o = Instantiate(serverEntryPrefab) as GameObject;
+
+                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+
+                    o.transform.SetParent(serverListRect, false);
+                }
+
+            }
+        }
+
         public void ChangePage(int dir)
         {
             int newPage = Mathf.Max(0, currentPage + dir);
@@ -73,11 +94,27 @@ namespace Prototype.NetworkLobby
             RequestPage(newPage);
         }
 
+        public void getResults()
+        {
+            if (!filterInputField.text.Equals(""))
+            {
+                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchFilteredList);
+            }
+        }
+
         public void RequestPage(int page)
         {
             previousPage = currentPage;
             currentPage = page;
 			lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
 		}
+
+        public void onEndEditField(string text)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                getResults();
+            }
+        }
     }
 }
