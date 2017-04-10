@@ -5,7 +5,7 @@ using System.Collections;
 namespace Prototype.NetworkLobby
 {
     //Main menu, mainly only a bunch of callback called by the UI (setup throught the Inspector)
-    public class LobbyMainMenu : MonoBehaviour 
+    public class LobbyMainMenu : MonoBehaviour
     {
         public LobbyManager lobbyManager;
 
@@ -14,6 +14,7 @@ namespace Prototype.NetworkLobby
 
         public InputField ipInput;
         public InputField matchNameInput;
+        public InputField passwordInput;
 
         public void OnEnable()
         {
@@ -24,6 +25,9 @@ namespace Prototype.NetworkLobby
 
             matchNameInput.onEndEdit.RemoveAllListeners();
             matchNameInput.onEndEdit.AddListener(onEndEditGameName);
+
+            passwordInput.onEndEdit.RemoveAllListeners();
+            passwordInput.onEndEdit.AddListener(onEndEditPassword);
         }
 
         public void OnClickHost()
@@ -56,13 +60,24 @@ namespace Prototype.NetworkLobby
 
         public void OnClickCreateMatchmakingGame()
         {
+            string password;
+            if (string.IsNullOrEmpty(passwordInput.text))
+            {
+                password = "";
+            }
+            else
+            {
+                password = passwordInput.text;
+            }
+
             lobbyManager.StartMatchMaker();
             lobbyManager.matchMaker.CreateMatch(
                 matchNameInput.text,
                 (uint)lobbyManager.maxPlayers,
                 true,
-				"", "", "", 0, 0,
-				lobbyManager.OnMatchCreate);
+                password,
+                "", "", 0, 0,
+                lobbyManager.OnMatchCreate);
 
             lobbyManager.backDelegate = lobbyManager.StopHost;
             lobbyManager._isMatchmaking = true;
@@ -87,6 +102,14 @@ namespace Prototype.NetworkLobby
         }
 
         void onEndEditGameName(string text)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                OnClickCreateMatchmakingGame();
+            }
+        }
+
+        void onEndEditPassword(string text)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
