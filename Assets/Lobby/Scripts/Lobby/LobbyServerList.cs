@@ -98,7 +98,12 @@ namespace Prototype.NetworkLobby
         {
             if (!filterInputField.text.Equals(""))
             {
+                foreach (Transform t in serverListRect)
+                    Destroy(t.gameObject);
                 lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchFilteredList);
+            }else
+            {
+                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchList);
             }
         }
 
