@@ -22,6 +22,7 @@ namespace Prototype.NetworkLobby
         static Color EvenServerColor = new Color(.94f, .94f, .94f, 1.0f);
 
         public InputField filterInputField;
+        public Dropdown filterDropdown;
 
         void OnEnable()
         {
@@ -30,6 +31,11 @@ namespace Prototype.NetworkLobby
 
             filterInputField.onEndEdit.RemoveAllListeners();
             filterInputField.onEndEdit.AddListener(onEndEditField);
+
+            filterDropdown.onValueChanged.AddListener(delegate
+            {
+                selectvalue(filterDropdown);
+            });
 
             foreach (Transform t in serverListRect)
                 Destroy(t.gameObject);
@@ -83,6 +89,22 @@ namespace Prototype.NetworkLobby
             }
         }
 
+        public void OnGUIMatchFilterByPlayerNumberList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
+        {
+            for (int i = 0; i < matches.Count; ++i)
+            {
+                if (filterDropdown.value == matches[i].currentSize)
+                {
+                    GameObject o = Instantiate(serverEntryPrefab) as GameObject;
+
+                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+
+                    o.transform.SetParent(serverListRect, false);
+                }
+
+            }
+        }
+
         public void ChangePage(int dir)
         {
             int newPage = Mathf.Max(0, currentPage + dir);
@@ -120,6 +142,25 @@ namespace Prototype.NetworkLobby
             {
                 getResults();
             }
+        }
+
+        private void selectvalue(Dropdown drpdown)
+        {
+            Debug.Log("selected: "+ drpdown.value);
+            if(drpdown.value != 0)
+            {
+                foreach (Transform t in serverListRect)
+                    Destroy(t.gameObject);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchFilterByPlayerNumberList);
+            }else
+            {
+                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchList);
+            }
+        }
+
+        void Destroy()
+        {
+            filterDropdown.onValueChanged.RemoveAllListeners();
         }
     }
 }
