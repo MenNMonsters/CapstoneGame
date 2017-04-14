@@ -99,9 +99,9 @@ public class GridController : MonoBehaviour {
 
     public void setDoorways()
     {
-        mapObject = GameObject.Find("MapObject");
-        map = mapObject.GetComponent<MapGenerator>();
-        
+        //mapObject = GameObject.Find("MapObject");
+        //map = mapObject.GetComponent<MapGenerator>();
+        print("INSIDE SETDOORWAYS");
         Color defaultColor = new Color(1,1,1,1);
 
         TileController leftTileController = tileList[numberOfRows / 2][0].GetComponent<TileController>();
