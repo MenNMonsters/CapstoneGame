@@ -122,10 +122,10 @@ namespace Prototype.NetworkLobby
             {
                 foreach (Transform t in serverListRect)
                     Destroy(t.gameObject);
-                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchFilteredList);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchFilteredList);
             }else
             {
-                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchList);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchList);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Prototype.NetworkLobby
         {
             previousPage = currentPage;
             currentPage = page;
-			lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
+			lobbyManager.matchMaker.ListMatches(page, 6, "", false, 0, 0, OnGUIMatchList);
 		}
 
         public void onEndEditField(string text)
@@ -151,10 +151,10 @@ namespace Prototype.NetworkLobby
             {
                 foreach (Transform t in serverListRect)
                     Destroy(t.gameObject);
-                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchFilterByPlayerNumberList);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchFilterByPlayerNumberList);
             }else
             {
-                lobbyManager.matchMaker.ListMatches(0, 6, "", true, 0, 0, OnGUIMatchList);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchList);
             }
         }
 
