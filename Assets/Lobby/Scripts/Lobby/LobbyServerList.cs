@@ -15,6 +15,10 @@ namespace Prototype.NetworkLobby
         public GameObject serverEntryPrefab;
         public GameObject noServerFound;
 
+        public GameObject passwordPromptPanel;
+        public InputField passwordInput;
+        public Button submitButton;
+
         protected int currentPage = 0;
         protected int previousPage = 0;
 
@@ -43,19 +47,21 @@ namespace Prototype.NetworkLobby
             noServerFound.SetActive(false);
 
             RequestPage(0);
+
+            passwordPromptPanel.SetActive(false);
         }
 
-		public void OnGUIMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
-		{
-			if (matches.Count == 0)
-			{
+        public void OnGUIMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
+        {
+            if (matches.Count == 0)
+            {
                 if (currentPage == 0)
                 {
                     noServerFound.SetActive(true);
                 }
 
                 currentPage = previousPage;
-               
+
                 return;
             }
 
@@ -63,13 +69,13 @@ namespace Prototype.NetworkLobby
             foreach (Transform t in serverListRect)
                 Destroy(t.gameObject);
 
-			for (int i = 0; i < matches.Count; ++i)
-			{
+            for (int i = 0; i < matches.Count; ++i)
+            {
                 GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
-				o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+                o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
 
-				o.transform.SetParent(serverListRect, false);
+                o.transform.SetParent(serverListRect, false);
             }
         }
 
@@ -81,7 +87,7 @@ namespace Prototype.NetworkLobby
                 {
                     GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
-                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
 
                     o.transform.SetParent(serverListRect, false);
                 }
@@ -97,7 +103,7 @@ namespace Prototype.NetworkLobby
                 {
                     GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
-                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+                    o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
 
                     o.transform.SetParent(serverListRect, false);
                 }
@@ -123,7 +129,8 @@ namespace Prototype.NetworkLobby
                 foreach (Transform t in serverListRect)
                     Destroy(t.gameObject);
                 lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchFilteredList);
-            }else
+            }
+            else
             {
                 lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchList);
             }
@@ -133,8 +140,8 @@ namespace Prototype.NetworkLobby
         {
             previousPage = currentPage;
             currentPage = page;
-			lobbyManager.matchMaker.ListMatches(page, 6, "", false, 0, 0, OnGUIMatchList);
-		}
+            lobbyManager.matchMaker.ListMatches(page, 6, "", false, 0, 0, OnGUIMatchList);
+        }
 
         public void onEndEditField(string text)
         {
@@ -146,16 +153,30 @@ namespace Prototype.NetworkLobby
 
         private void selectvalue(Dropdown drpdown)
         {
-            Debug.Log("selected: "+ drpdown.value);
-            if(drpdown.value != 0)
+            Debug.Log("selected: " + drpdown.value);
+            if (drpdown.value != 0)
             {
                 foreach (Transform t in serverListRect)
                     Destroy(t.gameObject);
                 lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchFilterByPlayerNumberList);
-            }else
+            }
+            else
             {
                 lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchList);
             }
+        }
+
+        public void showPasswordPromptPanel()
+        {
+            passwordPromptPanel.SetActive(true);
+            passwordInput.Select();
+            passwordInput.ActivateInputField();
+        }
+
+        public void onExitButtonClick()
+        {
+            passwordInput.text = "";
+            passwordPromptPanel.SetActive(false);
         }
 
         void Destroy()
