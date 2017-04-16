@@ -39,11 +39,16 @@ public class PlayerControl : NetworkBehaviour
     private int playerEnergy;
     [SyncVar(hook = "OnEnemyHealthChanged")]
     private int enemyHealth;
+    [SyncVar(hook = "OnEnemyHealth2Changed")]
+    private int enemyHealth2;
     [SyncVar(hook = "OnEnemyEnergyChanged")]
     private int enemyEnergy;
 
+    [SyncVar(hook = "OnCountChanged")]
+    private int count;
+
     [SyncVar]
-    public int numOfPlayer;
+    public int numOfPlayer = 4;
 
     [SyncVar(hook = "OnPlayerName")]
     public string pName;
@@ -52,9 +57,11 @@ public class PlayerControl : NetworkBehaviour
     private Text playerHealthText;
     private Text playerEnergyText;
     private Text enemyHealthText;
+    private Text enemyHealth2Text;
     private Text enemyEnergyText;
     private Text playerNameText;
     private Text PlayerPortraitText;
+    private Text countText;
 
     private Image playerHealthImage;
     private Image playerEnergyImage;
@@ -72,6 +79,7 @@ public class PlayerControl : NetworkBehaviour
     bool p4Enabled = false;
     bool normal = false;
     bool magic = false;
+    bool turnChoosed = false;
 
     private void Awake()
     {
@@ -81,61 +89,65 @@ public class PlayerControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log(numOfPlayer);
-        p2 = GameObject.Find("PlayerInfoContainer2");
-        p3 = GameObject.Find("PlayerInfoContainer3");
-        p4 = GameObject.Find("PlayerInfoContainer4");
+        //Debug.Log(numOfPlayer);
+        //p2 = GameObject.Find("PlayerInfoContainer2");
+        //p3 = GameObject.Find("PlayerInfoContainer3");
+        //p4 = GameObject.Find("PlayerInfoContainer4");
 
-        if (isLocalPlayer)
-        {
-            if (numOfPlayer < 4)
-            {
-                p4.SetActive(false);
-                if (numOfPlayer < 3)
-                {
-                    p3.SetActive(false);
-                    if (numOfPlayer < 2)
-                    {
-                        p2.SetActive(false);
-                    }
-                }
-            }
+        //if (isLocalPlayer)
+        //{
+        //    if (numOfPlayer < 4)
+        //    {
+        //        p4.SetActive(false);
+        //        if (numOfPlayer < 3)
+        //        {
+        //            p3.SetActive(false);
+        //            if (numOfPlayer < 2)
+        //            {
+        //                p2.SetActive(false);
+        //            }
+        //        }
+        //    }
 
-            Debug.Log(pName);
+        //    Debug.Log(pName);
 
-            playerNameText = GameObject.Find("Name").GetComponent<Text>();
-            if (playerNameText != null)
-                playerNameText.text = "You are " + pName;
-        }
+        //    playerNameText = GameObject.Find("Name").GetComponent<Text>();
+        //    if (playerNameText != null)
+        //        playerNameText.text = "You are " + pName;
+        //}
 
-        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-        PlayerPortraitText.text = pName;
+        //PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //PlayerPortraitText.text = pName;
 
-        OnPlayerName(pName);
+        //OnPlayerName(pName);
 
-        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
 
 
-        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
         turn = pName + ":Your Turn";
         OnTurnChanged(turn);
 
         playerHealth = PLAYER_HEALTH;
         playerEnergy = PLAYER_ENERGY;
 
-
+        countText = GameObject.Find("Count").GetComponent<Text>();
+        count = 4;
+        OnCountChanged(count);
 
         enemyHealthText = GameObject.Find("EnemyHealth").GetComponent<Text>();
         enemyHealth = ENEMY_HEALTH;
+        enemyHealth2Text = GameObject.Find("EnemyHealth2").GetComponent<Text>();
+        enemyHealth2 = ENEMY_HEALTH;
         enemyEnergyText = GameObject.Find("EnemyEnergy").GetComponent<Text>();
         enemyEnergy = ENEMY_ENERGY;
         enemyHealthImage = GameObject.Find("EnemyHealthBar").GetComponent<Image>();
@@ -254,8 +266,11 @@ public class PlayerControl : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-            normal = false;
-            magic = false;
+            if (!turnChoosed)
+            {
+                normal = false;
+                magic = false;
+            }
 
             if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
             {
@@ -265,12 +280,13 @@ public class PlayerControl : NetworkBehaviour
                 }
             }
 
-            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL"))
+            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL") && !turnChoosed)
             {
                 if (currentState == BattleStates.PLAYERCHOICE)
                 {
                     normal = true;
-                    CmdOnEnemyHealthChanged(10);
+                    turnChoosed = true;
+                    CmdOnEnemyHealth2Changed(10);
                     if (enemyHealth <= 0)
                     {
                         enemyHealth = 0;
@@ -278,20 +294,23 @@ public class PlayerControl : NetworkBehaviour
                     }
                     else
                     {
-                        currentState = BattleStates.ENEMYCHOICE;
+                        turn = pName + "chooses normal attack!";
+                        CmdOnTurnChanged(turn);
+                        CmdOnCountChanged();
                     }
 
                 }
             }
 
-            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical"))
+            if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical") && !turnChoosed)
             {
                 if (currentState == BattleStates.PLAYERCHOICE)
                 {
                     magic = true;
                     if (playerEnergy >= PLAYER_MAGIC_CONSUME)
                     {
-                        CmdOnEnemyHealthChanged(20);
+                        turnChoosed = true;
+                        CmdOnEnemyHealth2Changed(20);
                         CmdOnPlayerEnergyChanged(20);
                         if (playerEnergy < 0)
                         {
@@ -304,10 +323,17 @@ public class PlayerControl : NetworkBehaviour
                         }
                         else
                         {
-                            currentState = BattleStates.ENEMYCHOICE;
+                            turn = pName + "chooses Magical attack!";
+                            CmdOnTurnChanged(turn);
+                            CmdOnCountChanged();
                         }
                     }
                 }
+            }
+
+            if (int.Parse(countText.text) == 0)
+            {
+                currentState = BattleStates.ENEMYCHOICE;
             }
 
             switch (currentState)
@@ -338,17 +364,24 @@ public class PlayerControl : NetworkBehaviour
         beingHandled = true;
         if (normal)
         {
-            turn = pName + ":normal attack!";
+            CmdOnEnemyHealthChanged(10);
         }
         else if (magic)
         {
-            turn = pName + ":magical attack!";
+            CmdOnEnemyHealthChanged(20);
         }
         else
         {
             turn = pName + ":pass turn";
         }
-        CmdOnTurnChanged(turn);
+
+        if (int.Parse(enemyHealthText.text) <= 0)
+        {
+            enemyHealth = 0;
+            enemyHealthText.text = enemyHealth.ToString();
+            currentState = BattleStates.WIN;
+        }
+
         yield return new WaitForSeconds(1);
 
         turn = pName + ":Enemy Turn";
@@ -372,7 +405,7 @@ public class PlayerControl : NetworkBehaviour
         }
         else
         {
-            turn = pName + ":Eenmy uses normal attack";
+            turn = pName + ":Enemy uses normal attack";
             CmdOnPlayerHealthChanged(5);
         }
         CmdOnTurnChanged(turn);
@@ -390,6 +423,10 @@ public class PlayerControl : NetworkBehaviour
         beingHandled = false;
         turn = pName + ":Your Turn";
         CmdOnTurnChanged(turn);
+        CmdOnResetCount();
+        count = 4;
+        countText.text = count.ToString();
+        turnChoosed = false;
     }
 
     [Command]
@@ -414,8 +451,30 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdOnEnemyHealthChanged(int value)
     {
-        enemyHealth = int.Parse(enemyHealthText.text);
+        enemyHealth = int.Parse(enemyHealth2Text.text);
         enemyHealth -= value;
+        enemyHealth += value;
+    }
+
+    [Command]
+    void CmdOnEnemyHealth2Changed(int value)
+    {
+        enemyHealth2 = int.Parse(enemyHealth2Text.text);
+        enemyHealth2 -= value;
+    }
+
+    [Command]
+    void CmdOnCountChanged()
+    {
+        count = int.Parse(countText.text);
+        count -= 1;
+    }
+
+    [Command]
+    void CmdOnResetCount()
+    {
+        count = 4;
+        countText.text = count.ToString();
     }
 
     [Command]
@@ -461,11 +520,25 @@ public class PlayerControl : NetworkBehaviour
         enemyHealthText.text = enemyHealth.ToString();
     }
 
+    void OnEnemyHealth2Changed(int value)
+    {
+        enemyHealth2 = value;
+
+        enemyHealth2Text.text = enemyHealth2.ToString();
+    }
+
     void OnEnemyEnergyChanged(int value)
     {
         enemyEnergy = value;
 
         enemyEnergyText.text = enemyEnergy.ToString();
+    }
+
+    void OnCountChanged(int value)
+    {
+        count = value;
+
+        countText.text = count.ToString();
     }
 
     void OnStateChanged(BattleStates value)
