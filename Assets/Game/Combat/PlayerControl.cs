@@ -276,7 +276,10 @@ public class PlayerControl : NetworkBehaviour
             {
                 if (currentState != BattleStates.LOSE && currentState != BattleStates.WIN && currentState == BattleStates.PLAYERCHOICE)
                 {
-                    currentState = BattleStates.ENEMYCHOICE;
+                    turnChoosed = true;
+                    turn = pName + "chooses pass turn!";
+                    CmdOnTurnChanged(turn);
+                    CmdOnCountChanged();
                 }
             }
 
@@ -369,10 +372,6 @@ public class PlayerControl : NetworkBehaviour
         else if (magic)
         {
             CmdOnEnemyHealthChanged(20);
-        }
-        else
-        {
-            turn = pName + ":pass turn";
         }
 
         if (int.Parse(enemyHealthText.text) <= 0)
