@@ -7,7 +7,7 @@ public class mapController : MonoBehaviour
 
     Tree map = new Tree();
 
-
+    public static int roomId;
     public Text currentNodeText;
     public Text leftChildText;
     public Text rightChildText;
@@ -33,7 +33,7 @@ public class mapController : MonoBehaviour
     {
         createMap();
         map.traverseTo(20);
-        
+        roomId = 20;
         setText();
         //map.printTree();
         //text.text = "Hello World";     
@@ -69,16 +69,19 @@ public class mapController : MonoBehaviour
     public void moveLeft()
     {
         map.traverseLeft();
+        roomId = map.getCurrentNodeId();
         setText();
     }
     public void moveRight()
     {
         map.traverseRight();
+        roomId = map.getCurrentNodeId();
         setText();
     }
     public void moveBack()
     {
         map.traverseBack();
+        roomId = map.getCurrentNodeId();
         setText();
     }
 

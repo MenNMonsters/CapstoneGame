@@ -1,20 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class playerController : MonoBehaviour {
+public class playerController : NetworkBehaviour {
 
     public GameObject currentTile;
     private mapController map;
     public GameObject mapObject;
 
     private GameObject bottomDoor, leftDoor, rightDoor, topDoor;
-
+    /*
     public Button upButton;
     public Button leftButton;
     public Button rightButton;
     public Button downButton;
+    */
+    private Button up;
+    private Button down;
+    private Button left;
+    private Button right;
 
     private TileController currentTileController;
     private TileController topTileController;
@@ -31,7 +37,8 @@ public class playerController : MonoBehaviour {
         leftDoor = GameObject.Find("leftDoor");
         rightDoor = GameObject.Find("rightDoor");
         topDoor = GameObject.Find("topDoor");
-
+        mapObject = GameObject.Find("mapObject");
+        /*
         Button lbutton = leftButton.GetComponent<Button>();
         lbutton.onClick.AddListener(moveLeft);
 
@@ -43,6 +50,11 @@ public class playerController : MonoBehaviour {
 
         Button dbutton = downButton.GetComponent<Button>();
         dbutton.onClick.AddListener(moveDown);
+        */
+       //if (!isServer)
+       //{
+       //   transform.position = new Vector3(-100, 0, 0);
+       //}
 
         checkTiles();
         initDoors();
@@ -52,22 +64,26 @@ public class playerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (isServer)
         {
-            moveUp();
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {            
+                moveUp();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                moveLeft();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                moveRight();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                moveDown();            
+            }
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            moveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            moveRight();
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            moveDown();            
-        }
+        
     }
     public void moveUp()
     {
