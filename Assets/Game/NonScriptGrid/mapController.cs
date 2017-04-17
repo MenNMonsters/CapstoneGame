@@ -32,6 +32,7 @@ public class mapController : MonoBehaviour
     void Start()
     {
         createMap();
+        map.traverseTo(20);
         
         setText();
         //map.printTree();
@@ -94,10 +95,14 @@ public class mapController : MonoBehaviour
 
     public void createMap()
     {
-        map.insert(50, "Start");
-        map.insert(10, "Fight");
-        map.insert(60, "Challenging Fight");
-
+        
+        map.insert(50, "fight");
+        map.insert(20, "start");
+        map.insert(10, "fight");
+        map.insert(30, "fight");
+       // map.insert(10, "Fight");
+        //map.insert(60, "Challenging Fight");
+/*
         map.insert(5, "Treasure");
         map.insert(20, "Merchant Room");
 
@@ -112,6 +117,7 @@ public class mapController : MonoBehaviour
         map.insert(22, "Treasure");
         map.insert(15, "Fight");
         map.insert(19, "Challenging Fight");
+        */
     }
 
     public int getLeftChild()
@@ -219,6 +225,21 @@ public class mapController : MonoBehaviour
             return predStack.Count;
         }
         //TRAVERSAL METHODS
+        public void traverseTo(int id)
+        {
+            int currentNodeId = getCurrentNodeId();
+            if(id > currentNodeId)
+            {
+                traverseRight();
+                traverseTo(id);
+            }
+            else if(id < currentNodeId)
+            {
+                traverseLeft();
+                traverseTo(id);
+            }
+        }
+
         public void traverseLeft()
         {
             btNode p = c;
