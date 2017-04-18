@@ -99,8 +99,10 @@ namespace Prototype.NetworkLobby
         {
             for (int i = 0; i < matches.Count; ++i)
             {
+                Debug.Log(matches[i].currentSize);
                 if (filterDropdown.value == matches[i].currentSize)
                 {
+                    
                     GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
                     o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
