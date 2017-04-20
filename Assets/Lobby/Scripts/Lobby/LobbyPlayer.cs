@@ -11,6 +11,9 @@ namespace Prototype.NetworkLobby
     //Any LobbyHook can then grab it and pass those value to the game player prefab (see the Pong Example in the Samples Scenes)
     public class LobbyPlayer : NetworkLobbyPlayer
     {
+
+        public static LobbyPlayer _instance;
+
         static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
         //used on server to avoid assigning the same color to two player
         static List<int> _colorInUse = new List<int>();
@@ -20,9 +23,11 @@ namespace Prototype.NetworkLobby
         public Button readyButton;
         public Button waitingPlayerButton;
         public Button removePlayerButton;
+        public Button characterButton;
 
         public GameObject localIcone;
         public GameObject remoteIcone;
+        public GameObject random;
 
         //OnMyName function will be invoked on clients when server change the value of playerName
         [SyncVar(hook = "OnMyName")]
@@ -64,6 +69,18 @@ namespace Prototype.NetworkLobby
             //will be created with the right value currently on server
             OnMyName(playerName);
             OnMyColor(playerColor);
+        }
+
+        public void Update()
+        {
+            if (LobbyPlayerList._instance.SEEN)
+            {
+                if (isLocalPlayer)
+                {
+                    CmdOnCharacterButtonClick(true);
+                }
+                    
+            }
         }
 
         public override void OnStartAuthority()
@@ -131,6 +148,15 @@ namespace Prototype.NetworkLobby
 
             readyButton.onClick.RemoveAllListeners();
             readyButton.onClick.AddListener(OnReadyClicked);
+            /*
+            characterButton.onClick.RemoveAllListeners();
+            characterButton.onClick.AddListener(OnCharacterButtonClicked);
+            
+            if (LobbyPlayerList._instance.SEEN)
+            {
+                OnCharacterButtonClicked();
+            }
+            print(LobbyPlayerList._instance.SEEN);*/
 
             //when OnClientEnterLobby is called, the loval PlayerController is not yet created, so we need to redo that here to disable
             //the add button if we reach maxLocalPlayer. We pass 0, as it was already counted on OnClientEnterLobby
@@ -291,6 +317,13 @@ namespace Prototype.NetworkLobby
             playerName = name;
         }
 
+        [Command]
+        public void CmdOnCharacterButtonClick(bool seen)
+        {
+            if(seen)
+            LobbyPlayerList._instance.getButton().interactable = false;
+        }
+
         //Cleanup thing when get destroy (which happen when client kick or disconnect)
         public void OnDestroy()
         {
@@ -310,6 +343,16 @@ namespace Prototype.NetworkLobby
                     break;
                 }
             }
+        }
+
+        public void setButton(Button button)
+        {
+            characterButton = button;
+        }
+
+        public Button getButton()
+        {
+            return characterButton;
         }
     }
 }

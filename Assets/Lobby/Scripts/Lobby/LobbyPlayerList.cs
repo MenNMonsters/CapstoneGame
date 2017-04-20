@@ -17,6 +17,9 @@ namespace Prototype.NetworkLobby
         protected VerticalLayoutGroup _layout;
         protected List<LobbyPlayer> _players = new List<LobbyPlayer>();
 
+        public bool SEEN = false;
+        public Button characterButton;
+
         public void OnEnable()
         {
             _instance = this;
@@ -66,5 +69,24 @@ namespace Prototype.NetworkLobby
                 ++i;
             }
         }
+
+        public void OnButtonClick(Button button)
+        {
+            SEEN = true;
+            setButton(button);
+
+        }
+
+        public void setButton(Button button)
+        {
+            characterButton = button;
+        }
+
+        public Button getButton()
+        {
+            return characterButton;
+        }
+
+
     }
 }

@@ -27,6 +27,7 @@ namespace Prototype.NetworkLobby
 
         public InputField filterInputField;
         public Dropdown filterDropdown;
+        public Dropdown privatefilterDown;
 
         void OnEnable()
         {
@@ -39,6 +40,11 @@ namespace Prototype.NetworkLobby
             filterDropdown.onValueChanged.AddListener(delegate
             {
                 selectvalue(filterDropdown);
+            });
+
+            privatefilterDown.onValueChanged.AddListener(delegate
+            {
+                filterprivatevalue(privatefilterDown);
             });
 
             foreach (Transform t in serverListRect)
@@ -113,6 +119,36 @@ namespace Prototype.NetworkLobby
             }
         }
 
+        public void OnGUIMatchFilterByPrivatePublicList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
+        {
+            for (int i = 0; i < matches.Count; ++i)
+            {
+                if (privatefilterDown.value == 2)
+                {
+
+                    if (matches[i].isPrivate)
+                    {
+                        GameObject o = Instantiate(serverEntryPrefab) as GameObject;
+
+                        o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
+
+                        o.transform.SetParent(serverListRect, false);
+                    }
+                }else if(privatefilterDown.value == 1)
+                {
+                    if (!matches[i].isPrivate)
+                    {
+                        GameObject o = Instantiate(serverEntryPrefab) as GameObject;
+
+                        o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor, this);
+
+                        o.transform.SetParent(serverListRect, false);
+                    }
+                }
+
+            }
+        }
+
         public void ChangePage(int dir)
         {
             int newPage = Mathf.Max(0, currentPage + dir);
@@ -168,6 +204,20 @@ namespace Prototype.NetworkLobby
             }
         }
 
+        private void filterprivatevalue(Dropdown drpdown)
+        {
+            if (drpdown.value != 0)
+            {
+                foreach (Transform t in serverListRect)
+                    Destroy(t.gameObject);
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchFilterByPrivatePublicList);
+            }
+            else
+            {
+                lobbyManager.matchMaker.ListMatches(0, 6, "", false, 0, 0, OnGUIMatchList);
+            }
+        }
+
         public void showPasswordPromptPanel()
         {
             passwordPromptPanel.SetActive(true);
@@ -184,6 +234,7 @@ namespace Prototype.NetworkLobby
         void Destroy()
         {
             filterDropdown.onValueChanged.RemoveAllListeners();
+            privatefilterDown.onValueChanged.RemoveAllListeners();
         }
     }
 }
