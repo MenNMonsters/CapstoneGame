@@ -87,6 +87,15 @@ namespace Prototype.NetworkLobby
             return characterButton;
         }
 
+        public string getString()
+        {
+            string stringToBeReturned = "";
+
+            stringToBeReturned = getButton().GetComponentInChildren<Text>().text;
+
+            return stringToBeReturned;
+        }
+
 
     }
 }

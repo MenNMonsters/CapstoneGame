@@ -20,20 +20,29 @@ namespace Prototype.NetworkLobby
 
         public Button colorButton;
         public InputField nameInput;
+        public Text changeCharacter;
         public Button readyButton;
         public Button waitingPlayerButton;
         public Button removePlayerButton;
-        public Button characterButton;
 
         public GameObject localIcone;
         public GameObject remoteIcone;
         public GameObject random;
+
+        static Dictionary<string, bool> characterUsage = new Dictionary<string, bool>()
+        {
+            {"WIZARD", true }, {"KNIGHT", true }, {"THIEF", true }, {"ARCHER", true }, {"BEAR", true }
+        };
+
+        
 
         //OnMyName function will be invoked on clients when server change the value of playerName
         [SyncVar(hook = "OnMyName")]
         public string playerName = "";
         [SyncVar(hook = "OnMyColor")]
         public Color playerColor = Color.white;
+        [SyncVar(hook = "OnCharacter")]
+        public string character = "";
 
         public Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         public Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
@@ -64,20 +73,23 @@ namespace Prototype.NetworkLobby
             {
                 SetupOtherPlayer();
             }
+            
 
             //setup the player data on UI. The value are SyncVar so the player
             //will be created with the right value currently on server
             OnMyName(playerName);
             OnMyColor(playerColor);
+            OnCharacter(character);
         }
-
+        
         public void Update()
         {
             if (LobbyPlayerList._instance.SEEN)
             {
                 if (isLocalPlayer)
                 {
-                    CmdOnCharacterButtonClick(true);
+                    //print(LobbyPlayerList._instance.getString());
+                    CmdOnCharacterButtonClick(LobbyPlayerList._instance.getString());
                 }
                     
             }
@@ -148,6 +160,10 @@ namespace Prototype.NetworkLobby
 
             readyButton.onClick.RemoveAllListeners();
             readyButton.onClick.AddListener(OnReadyClicked);
+
+            /*
+            LobbyPlayerList._instance.getButton().onClick.RemoveAllListeners();
+            LobbyPlayerList._instance.getButton().onClick.AddListener(OnButtonClicked);*/
             /*
             characterButton.onClick.RemoveAllListeners();
             characterButton.onClick.AddListener(OnCharacterButtonClicked);
@@ -221,6 +237,12 @@ namespace Prototype.NetworkLobby
             colorButton.GetComponent<Image>().color = newColor;
         }
 
+        public void OnCharacter(string str)
+        {
+            character = str;
+            changeCharacter.text = character;
+        }
+
         //===== UI Handler
 
         //Note that those handler use Command function, as we need to change the value on the server not locally
@@ -239,6 +261,12 @@ namespace Prototype.NetworkLobby
         {
             CmdNameChanged(str);
         }
+
+        /*
+        public void OnButtonClicked()
+        {
+            CmdOnCharacterButtonClick(true);
+        }*/
 
         public void OnRemovePlayerClick()
         {
@@ -318,10 +346,21 @@ namespace Prototype.NetworkLobby
         }
 
         [Command]
-        public void CmdOnCharacterButtonClick(bool seen)
+        public void CmdOnCharacterButtonClick(string characterName)
         {
-            if(seen)
-            LobbyPlayerList._instance.getButton().interactable = false;
+            List<string> keyList = new List<string>(characterUsage.Keys);
+
+            foreach (string item in keyList)
+            {
+                if (item.Equals(characterName)){
+
+                    if (characterUsage[item])
+                    {
+                        character = playerName + " is " + characterName;
+                        characterUsage[item] = false;
+                    }
+                }
+            }
         }
 
         //Cleanup thing when get destroy (which happen when client kick or disconnect)
@@ -344,7 +383,7 @@ namespace Prototype.NetworkLobby
                 }
             }
         }
-
+        /*
         public void setButton(Button button)
         {
             characterButton = button;
@@ -353,6 +392,6 @@ namespace Prototype.NetworkLobby
         public Button getButton()
         {
             return characterButton;
-        }
+        }*/
     }
 }
