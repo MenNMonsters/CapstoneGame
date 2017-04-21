@@ -346,6 +346,7 @@ namespace Prototype.NetworkLobby
         }
 
         List<string> allTheClickedCharacters = new List<string>();
+        string lastCharacter = "";
 
         [Command]
         public void CmdOnCharacterButtonClick(string characterName)
@@ -364,7 +365,7 @@ namespace Prototype.NetworkLobby
                 }
             }
 
-            string lastCharacter = allTheClickedCharacters[allTheClickedCharacters.Count - 1];
+            lastCharacter = allTheClickedCharacters[allTheClickedCharacters.Count - 1];
             characterUsage[lastCharacter] = false;
             for(int i = 0; i < allTheClickedCharacters.Count-1; i++)
             {
