@@ -345,22 +345,32 @@ namespace Prototype.NetworkLobby
             playerName = name;
         }
 
+        List<string> allTheClickedCharacters = new List<string>();
+
         [Command]
         public void CmdOnCharacterButtonClick(string characterName)
         {
             List<string> keyList = new List<string>(characterUsage.Keys);
-
             foreach (string item in keyList)
             {
                 if (item.Equals(characterName)){
-
+                    
                     if (characterUsage[item])
                     {
+                        allTheClickedCharacters.Add(item);
                         character = playerName + " is " + characterName;
-                        characterUsage[item] = false;
+                        //characterUsage[item] = false;
                     }
                 }
             }
+
+            string lastCharacter = allTheClickedCharacters[allTheClickedCharacters.Count - 1];
+            characterUsage[lastCharacter] = false;
+            for(int i = 0; i < allTheClickedCharacters.Count-1; i++)
+            {
+                characterUsage[allTheClickedCharacters[i]] = true;
+            }
+
         }
 
         //Cleanup thing when get destroy (which happen when client kick or disconnect)
