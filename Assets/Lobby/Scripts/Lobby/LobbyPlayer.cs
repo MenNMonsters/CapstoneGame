@@ -27,7 +27,7 @@ namespace Prototype.NetworkLobby
 
         public GameObject localIcone;
         public GameObject remoteIcone;
-        public GameObject random;
+        private Object semaphore = new Object();
 
         static Dictionary<string, bool> characterUsage = new Dictionary<string, bool>()
         {
@@ -365,12 +365,20 @@ namespace Prototype.NetworkLobby
                 }
             }
 
-            lastCharacter = allTheClickedCharacters[allTheClickedCharacters.Count - 1];
-            characterUsage[lastCharacter] = false;
-            for(int i = 0; i < allTheClickedCharacters.Count-1; i++)
+            if(allTheClickedCharacters.Count <= 1)
             {
-                characterUsage[allTheClickedCharacters[i]] = true;
+                lastCharacter = allTheClickedCharacters.Last();
+                characterUsage[lastCharacter] = false;
+                
+            }else
+            {
+                string secondLast = allTheClickedCharacters[allTheClickedCharacters.Count - 2];
+                characterUsage[secondLast] = true;
+                allTheClickedCharacters.Remove(secondLast);
+                lastCharacter = allTheClickedCharacters.Last();
+                characterUsage[lastCharacter] = false;
             }
+            
 
         }
 
