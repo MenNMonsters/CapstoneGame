@@ -24,6 +24,7 @@ namespace Prototype.NetworkLobby
         public Button readyButton;
         public Button waitingPlayerButton;
         public Button removePlayerButton;
+        public bool OKTOGO = false;
 
         public GameObject localIcone;
         public GameObject remoteIcone;
@@ -43,6 +44,8 @@ namespace Prototype.NetworkLobby
         public Color playerColor = Color.white;
         [SyncVar(hook = "OnCharacter")]
         public string character = "";
+        [SyncVar(hook = "OnReadyCharacterClick")]
+        public bool hasCharacter = false;
 
         public string characterName;
 
@@ -82,6 +85,7 @@ namespace Prototype.NetworkLobby
             OnMyName(playerName);
             OnMyColor(playerColor);
             OnCharacter(character);
+            OnReadyCharacterClick(hasCharacter);
         }
         
         public void Update()
@@ -245,6 +249,15 @@ namespace Prototype.NetworkLobby
             changeCharacter.text = character;
         }
 
+        public void OnReadyCharacterClick(bool boolean)
+        {
+            hasCharacter = boolean;
+            if (hasCharacter)
+            {
+                OKTOGO = true;
+            }
+        }
+
         //===== UI Handler
 
         //Note that those handler use Command function, as we need to change the value on the server not locally
@@ -256,7 +269,11 @@ namespace Prototype.NetworkLobby
 
         public void OnReadyClicked()
         {
-            SendReadyToBeginMessage();
+            if (OKTOGO)
+            {
+                SendReadyToBeginMessage();
+            }
+            
         }
 
         public void OnNameChanged(string str)
@@ -360,6 +377,7 @@ namespace Prototype.NetworkLobby
                     
                     if (characterUsage[item])
                     {
+                        hasCharacter = true;
                         allTheClickedCharacters.Add(item);
                         character = playerName + " is " + characterName;
                         this.characterName = characterName;
@@ -368,12 +386,12 @@ namespace Prototype.NetworkLobby
                 }
             }
 
-            if(allTheClickedCharacters.Count <= 1)
+            if(allTheClickedCharacters.Count == 1)
             {
                 lastCharacter = allTheClickedCharacters.Last();
                 characterUsage[lastCharacter] = false;
                 
-            }else
+            }else if(allTheClickedCharacters.Count >= 2)
             {
                 string secondLast = allTheClickedCharacters[allTheClickedCharacters.Count - 2];
                 characterUsage[secondLast] = true;
