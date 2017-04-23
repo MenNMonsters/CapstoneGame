@@ -5,45 +5,72 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Movement : NetworkBehaviour {
-	public GameObject mainCamera;
-	float x; 
-	float y;
-	// Use this for initialization
-	void Start () {
-		mainCamera = GameObject.Find ("Canvas");
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-		if(isServer){
-
-		 x = Input.GetAxis ("Horizontal") * Time.deltaTime * 4.0f;
-		 y = Input.GetAxis ("Vertical") * Time.deltaTime * 4.0f;
-		
-		}
-		transform.Translate (x, y, 0);
-	}
+public class Movement : NetworkBehaviour
+{
+    float x;
+    float y;
+    // Use this for initialization
+    void Start()
+    {
 
 
+    }
 
-	/*void OnGUI(){
-		if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
-		{
-			
-			//SceneManager.LoadScene(1);
-			//NetworkManager.singleton.ServerChangeScene("Combat");
-			//mainCamera.transform.Translate(1,1,0);
-			//Destroy(GameObject.Find("Network Manager"));
-			//NetworkManager.Shutdown();
-			//SceneManager.LoadScene("Combat", LoadSceneMode.Single);
+    // Update is called once per frame
+    void Update()
+    {
 
-		}
-	
-	
-	}*/
+        if (isServer)
+        {
+
+            x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
+            y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
+
+        }
+        transform.Translate(x, y, 0);
+    }
+
+    void OnGUI()
+    {
+        if (isServer)
+        {
+            if (GUI.Button(new Rect(Screen.width * (50f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Left"))
+            {
+
+
+                x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
+                y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
+                transform.Translate(-0.5f, 0, 0);
+            }
+            if (GUI.Button(new Rect(Screen.width * (70f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Right"))
+            {
+
+
+                x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
+                y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
+                transform.Translate(0.5f, 0, 0);
+            }
+            if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.767f), Screen.width * (0.1f), Screen.height * (0.065f)), "Up"))
+            {
+
+
+                x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
+                y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
+                transform.Translate(0, 0.5f, 0);
+            }
+            if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Down"))
+            {
+
+
+                x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
+                y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
+                transform.Translate(0, -0.5f, 0);
+            }
+
+        }
+
+
+    }
 
 
 }

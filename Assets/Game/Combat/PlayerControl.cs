@@ -25,6 +25,9 @@ public class PlayerControl : NetworkBehaviour
 
     private bool beingHandled = false;
 
+    bool normalDefeated = false;
+    bool bossDefeated = false;
+
     public enum BattleStates
     {
         START,
@@ -368,27 +371,27 @@ public class PlayerControl : NetworkBehaviour
     {
 
         //Debug.Log("Canvas Enabled " + canvasEnabled + "handle " + handle);
-
+        //Debug.Log(Collision.collide);
         if (isServer)
         {
             if (isLocalPlayer)
             {
-                if (!canvas)
+                if (canvasText != null && !bool.Parse(canvasText.text))
                 {
 
-                    if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "NormalRoom"))
+                    if (Collision.normalCollide && !normalDefeated)
                     {
-
                         RpcChangeToCombat();
-                        CmdOnCanvasChanged();
+                        CmdOnCanvasChanged(true);
                     }
 
-
-                    if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.895f), Screen.width * (0.1f), Screen.height * (0.065f)), "BossRoom"))
+                    if (Collision.bossCollide && !bossDefeated)
                     {
                         RpcChangeToBoos();
-                        CmdOnCanvasChanged();
+                        CmdOnCanvasChanged(true);
                     }
+
+                   
 
                 }
             }
@@ -420,7 +423,7 @@ public class PlayerControl : NetworkBehaviour
                 if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.895f), Screen.width * (0.1f), Screen.height * (0.065f)), "Move"))
                 {
                     RpcChangeToMove();
-                    CmdOnCanvasChanged();
+                    CmdOnCanvasChanged(false);
                 }
 
 
@@ -460,13 +463,7 @@ public class PlayerControl : NetworkBehaviour
                             {
                                 playerEnergy = 0;
                             }
-                            if (enemyHealth <= 0)
-                            {
-                                RpcChangeToMove();
-                                CmdOnCanvasChanged();
-                                currentState = BattleStates.WIN;
-                            }
-                            else
+                            if (enemyHealth > 0)                           
                             {
                                 turn = pName + "chooses Magical attack!";
                                 CmdOnTurnChanged(turn);
@@ -498,12 +495,6 @@ public class PlayerControl : NetworkBehaviour
                         break;
                     case (BattleStates.WIN):
                         turn = "You Win";
-                        if (!handle)
-                        {
-                            RpcChangeToMove();
-                            CmdOnCanvasChanged();
-                            handle = true;
-                        }
                         break;
                 }
             }
@@ -526,6 +517,17 @@ public class PlayerControl : NetworkBehaviour
         {
             enemyHealth = 0;
             enemyHealthText.text = enemyHealth.ToString();
+            if (Collision.normalCollide && !normalDefeated)
+            {
+                normalDefeated = true;
+                Collision.normalCollide = false;
+            }
+
+            if (Collision.bossCollide && !bossDefeated)
+            {
+                bossDefeated = true;
+                Collision.bossCollide = false;
+            }
 
             turn = pName + ":Enemy defeated!";
             CmdOnTurnChanged(turn);
@@ -533,7 +535,7 @@ public class PlayerControl : NetworkBehaviour
             yield return new WaitForSeconds(2);
 
             RpcChangeToMove();
-            CmdOnCanvasChanged();
+            CmdOnCanvasChanged(false);
             currentState = BattleStates.WIN;
 
         }
@@ -630,10 +632,9 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    void CmdOnCanvasChanged()
+    void CmdOnCanvasChanged(bool value)
     {
-        canvas = bool.Parse(canvasText.text);
-        canvas = !canvas;
+        canvas = value;
     }
 
     [Command]
