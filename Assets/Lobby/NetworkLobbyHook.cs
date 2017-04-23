@@ -15,6 +15,8 @@ public class NetworkLobbyHook : LobbyHook {
         localPlayer.numOfPlayer = LobbyManager._playerNumber;
 
         localPlayer.pName = lobby.playerName;
+
+        localPlayer.characterName = lobby.characterName;
         //localPlayer.playerColor = lobby.playerColor;
     }
 

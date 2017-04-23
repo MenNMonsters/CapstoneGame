@@ -44,6 +44,8 @@ namespace Prototype.NetworkLobby
         [SyncVar(hook = "OnCharacter")]
         public string character = "";
 
+        public string characterName;
+
         public Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         public Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
 
@@ -360,6 +362,7 @@ namespace Prototype.NetworkLobby
                     {
                         allTheClickedCharacters.Add(item);
                         character = playerName + " is " + characterName;
+                        this.characterName = characterName;
                         //characterUsage[item] = false;
                     }
                 }

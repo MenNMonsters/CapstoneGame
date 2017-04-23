@@ -9,6 +9,8 @@ public class Movement : NetworkBehaviour
 {
     float x;
     float y;
+
+    public static bool combat = false;
     // Use this for initialization
     void Start()
     {
@@ -36,8 +38,6 @@ public class Movement : NetworkBehaviour
         {
             if (GUI.Button(new Rect(Screen.width * (50f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Left"))
             {
-
-
                 x = Input.GetAxis("Horizontal") * Time.deltaTime * 4.0f;
                 y = Input.GetAxis("Vertical") * Time.deltaTime * 4.0f;
                 transform.Translate(-0.5f, 0, 0);
