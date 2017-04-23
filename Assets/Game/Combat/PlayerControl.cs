@@ -47,6 +47,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar]
     public string playerUniqueIdentity;
 
+    [SyncVar]
     private BattleStates currentState;
 
     [SyncVar(hook = "OnTurnChanged")]
@@ -112,6 +113,8 @@ public class PlayerControl : NetworkBehaviour
     bool p4Enabled = false;
     bool normal = false;
     bool magic = false;
+
+    [SyncVar]
     bool turnChoosed = false;
 
     private void Awake()
@@ -527,6 +530,7 @@ public class PlayerControl : NetworkBehaviour
         OnEnemyHealthChanged(enemyHealth);
         OnEnemyEnergyChanged(enemyEnergy);
         currentState = BattleStates.PLAYERCHOICE;
+        turnChoosed = false;
         if (container != null)
             container.GetComponent<CanvasGroup>().alpha = 1;
         if (playerBox != null)
@@ -586,7 +590,7 @@ public class PlayerControl : NetworkBehaviour
                     magic = false;
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS"))
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS") && !turnChoosed)
                 {
 
                     if (currentState != BattleStates.LOSE && currentState != BattleStates.WIN && currentState == BattleStates.PLAYERCHOICE)
@@ -616,14 +620,12 @@ public class PlayerControl : NetworkBehaviour
                         if (enemyHealth <= 0)
                         {
                             enemyHealth = 0;
-                            currentState = BattleStates.WIN;
                         }
-                        else
-                        {
+                        
                             turn = pName + ":chooses normal attack!";
                             CmdOnTurnChanged(turn);
                             CmdOnCountChanged();
-                        }
+                        
 
                     }
                 }
@@ -642,12 +644,14 @@ public class PlayerControl : NetworkBehaviour
                             {
                                 playerEnergy = 0;
                             }
-                            if (enemyHealth > 0)
+                            if (enemyHealth <= 0)
                             {
-                                turn = pName + ":chooses Magical attack!";
-                                CmdOnTurnChanged(turn);
-                                CmdOnCountChanged();
+                                enemyHealth = 0;
                             }
+
+                            turn = pName + ":chooses magical attack!";
+                            CmdOnTurnChanged(turn);
+                            CmdOnCountChanged();
                         }
                     }
                 }
@@ -741,10 +745,6 @@ public class PlayerControl : NetworkBehaviour
                 if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
                 {
                     turn = pName + ":Eenmy uses magical attack";
-                    if (numOfPlayer == 2)
-                    {
-
-                    }
                     CmdOnPlayerHealthChanged(20);
                     CmdOnEnemyEnergyChanged(ENEMY_MAGIC_CONSUME);
                     if (enemyEnergy <= 0)
