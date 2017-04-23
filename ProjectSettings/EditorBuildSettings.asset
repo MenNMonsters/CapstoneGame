@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/MainMenu/MainMenu.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Lobby/Lobby.unity
   - enabled: 0
     path: Assets/Help/Help.unity
@@ -28,6 +28,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Login/UnityAndroidExtras/Demo/Scenes/Demo_build_run.unity
   - enabled: 0
-    path: Assets/Game/Combat/Combat.unity
-  - enabled: 0
     path: Assets/Game/NonScriptGrid/nonScriptScene.unity
+  - enabled: 0
+    path: Assets/Game/New Movement Scene/Main.unity
+  - enabled: 1
+    path: Assets/Game/Combat/Combat.unity
