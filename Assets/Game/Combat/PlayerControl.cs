@@ -90,6 +90,8 @@ public class PlayerControl : NetworkBehaviour
     GameObject p4;
     GameObject enemy;
     GameObject container;
+	GameObject normalRoom;
+	GameObject bossRoom;
 
     bool p2Enabled = false;
     bool p3Enabled = false;
@@ -108,6 +110,8 @@ public class PlayerControl : NetworkBehaviour
     {
 
         playerBox = GameObject.Find("Player Box");
+		normalRoom = GameObject.Find ("Normal Door");
+		bossRoom = GameObject.Find ("Boss Door");
 
         //Debug.Log(numOfPlayer);
 
@@ -307,6 +311,12 @@ public class PlayerControl : NetworkBehaviour
         {
             playerBox.SetActive(false);
         }
+		if (normalRoom != null) {
+			normalRoom.SetActive(false);
+		}
+		if (bossRoom != null) {
+			bossRoom.SetActive(false);
+		}
 
     }
 
@@ -325,6 +335,12 @@ public class PlayerControl : NetworkBehaviour
         {
             playerBox.SetActive(true);
         }
+		if (normalRoom != null) {
+			normalRoom.SetActive(true);
+		}
+		if (bossRoom != null) {
+			bossRoom.SetActive(true);
+		}
 
     }
 

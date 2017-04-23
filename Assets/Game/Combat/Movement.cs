@@ -20,8 +20,8 @@ public class Movement : NetworkBehaviour {
 		
 		if(isServer){
 
-		 x = Input.GetAxis ("Horizontal") * Time.deltaTime * 3.0f;
-		 y = Input.GetAxis ("Vertical") * Time.deltaTime * 3.0f;
+		 x = Input.GetAxis ("Horizontal") * Time.deltaTime * 4.0f;
+		 y = Input.GetAxis ("Vertical") * Time.deltaTime * 4.0f;
 		
 		}
 		transform.Translate (x, y, 0);
