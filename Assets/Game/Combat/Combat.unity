@@ -537,6 +537,7 @@ MonoBehaviour:
   ExitButton: {fileID: 2137039915}
   SendButton: {fileID: 2078158526}
   scrollbar: {fileID: 1281796993}
+  localPlayerName: 
 --- !u!1 &130373707
 GameObject:
   m_ObjectHideFlags: 0

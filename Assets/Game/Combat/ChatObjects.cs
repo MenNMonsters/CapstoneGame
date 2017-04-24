@@ -12,4 +12,5 @@ public class ChatObjects : MonoBehaviour
     public Button ExitButton;
     public Button SendButton;
     public Scrollbar scrollbar;
+    public string localPlayerName;
 }

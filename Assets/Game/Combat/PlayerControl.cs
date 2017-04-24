@@ -4,6 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+public struct MessageStruct
+{
+    public string name;
+    public string message;
+
+    public MessageStruct(string name, string message)
+    {
+        this.name = name;
+        this.message = message;
+    }
+}
+
 public class PlayerControl : NetworkBehaviour
 {
     // Chat Message Stuff Start
@@ -15,12 +27,11 @@ public class PlayerControl : NetworkBehaviour
     Button SendButton;
     Scrollbar scrollbar;
 
+    ChatObjects co;
     GameObject messagePrefab;
 
     [SyncVar(hook = "OnChatMessageSent")]
-    private string chatMessage;
-
-    private string localPlayerName;
+    private MessageStruct messageStruct;
     // Chat Message Stuff End
 
     public GameObject playerBox;
@@ -143,7 +154,7 @@ public class PlayerControl : NetworkBehaviour
     void Start()
     {
         ChatButton = GameObject.Find("ChatButton").GetComponent<Button>();
-        ChatObjects co = ChatButton.GetComponent<ChatObjects>();
+        co = ChatButton.GetComponent<ChatObjects>();
 
         ChatPanel = co.ChatPanel;
         ChatContent = co.ChatContent;
@@ -205,16 +216,22 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
             }
-            
-            localPlayerName = pName;
-            Debug.Log(localPlayerName);
 
+            if (string.IsNullOrEmpty(pName))
+            {
+                co.localPlayerName = "";
+            } else
+            {
+                co.localPlayerName = pName;
+            }
+            
             playerNameText = GameObject.Find("Name").GetComponent<Text>();
             if (playerNameText != null)
             {
                 playerNameText.text = "You are " + pName;
             }
         }
+        Debug.Log(co.localPlayerName);
 
         id = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
 
@@ -1027,7 +1044,7 @@ public class PlayerControl : NetworkBehaviour
     {
         if (!string.IsNullOrEmpty(chatInput.text))
         {
-            CmdSendMessage(chatInput.text);
+            CmdSendMessage(new MessageStruct(co.localPlayerName, chatInput.text));
         }
     }
 
@@ -1039,10 +1056,12 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    void OnChatMessageSent(string message)
+    void OnChatMessageSent(MessageStruct message)
     {
         GameObject o = Instantiate(Resources.Load("Message")) as GameObject;
-        o.GetComponent<Message>().Populate("", message);
+        Debug.Log(message.name);
+        Debug.Log(message.message);
+        o.GetComponent<Message>().Populate(message.name, message.message);
 
         o.transform.SetParent(ChatContent.transform);
         chatInput.text = "";
@@ -1050,8 +1069,8 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    void CmdSendMessage(string message)
+    void CmdSendMessage(MessageStruct message)
     {
-        chatMessage = message;
+        messageStruct = message;
     }
 }

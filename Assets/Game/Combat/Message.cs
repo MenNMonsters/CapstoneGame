@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class Message : MonoBehaviour
 {
-    //public Text playerName;
+    public Text playerName;
     public Text message;
 
     public void Populate(string name, string text)
     {
-        //playerName.text = name;
+        playerName.text = name;
         message.text = text;
     }
 }
