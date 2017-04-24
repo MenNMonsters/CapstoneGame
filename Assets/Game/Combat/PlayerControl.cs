@@ -6,8 +6,24 @@ using UnityEngine.Networking;
 
 public class PlayerControl : NetworkBehaviour
 {
-    public GameObject playerBox;
+    // Chat Message Stuff Start
+    GameObject ChatPanel;
+    GameObject ChatContent;
+    InputField chatInput;
+    Button ChatButton;
+    Button ExitButton;
+    Button SendButton;
+    Scrollbar scrollbar;
 
+    GameObject messagePrefab;
+
+    [SyncVar(hook = "OnChatMessageSent")]
+    private string chatMessage;
+
+    private string localPlayerName;
+    // Chat Message Stuff End
+
+    public GameObject playerBox;
 
     public Sprite characterImg;
 
@@ -126,6 +142,38 @@ public class PlayerControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        ChatButton = GameObject.Find("ChatButton").GetComponent<Button>();
+        ChatObjects co = ChatButton.GetComponent<ChatObjects>();
+
+        ChatPanel = co.ChatPanel;
+        ChatContent = co.ChatContent;
+
+        ExitButton = co.ExitButton;
+        SendButton = co.SendButton;
+        chatInput = co.chatInput;
+        scrollbar = co.scrollbar;
+
+        //ChatPanel = GameObject.Find("ChatPanel");
+        //ChatContent = GameObject.Find("ChatContent");
+
+        //ExitButton = GameObject.Find("ExitButton").GetComponent<Button>();
+        //SendButton = GameObject.Find("SendButton").GetComponent<Button>();
+        //chatInput = GameObject.Find("ChatInputField").GetComponent<InputField>();
+        //scrollbar = GameObject.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
+
+        chatInput.onEndEdit.RemoveAllListeners();
+        chatInput.onEndEdit.AddListener(onEndEditChatInput);
+
+        ChatButton.onClick.RemoveAllListeners();
+        ChatButton.onClick.AddListener(() => { onChatButtonClick(); });
+
+        ExitButton.onClick.RemoveAllListeners();
+        ExitButton.onClick.AddListener(() => { onExitButtonClick(); });
+
+        SendButton.onClick.RemoveAllListeners();
+        SendButton.onClick.AddListener(() => { onSendButtonClick(); });
+
+        ChatPanel.SetActive(false);
 
         playerBox = GameObject.Find("Player Box");
         normalRoom = GameObject.Find("Normal Door");
@@ -157,12 +205,15 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
             }
-
-            Debug.Log(pName);
+            
+            localPlayerName = pName;
+            Debug.Log(localPlayerName);
 
             playerNameText = GameObject.Find("Name").GetComponent<Text>();
             if (playerNameText != null)
+            {
                 playerNameText.text = "You are " + pName;
+            }
         }
 
         id = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
@@ -359,6 +410,7 @@ public class PlayerControl : NetworkBehaviour
 
         container.GetComponent<CanvasGroup>().alpha = 0;
 
+
     }
 
     public override void OnStartLocalPlayer()
@@ -372,7 +424,7 @@ public class PlayerControl : NetworkBehaviour
     {
 
 
-        Debug.Log(canvas);
+        //Debug.Log(canvas);
 
         //if (isServer)
         //{
@@ -734,7 +786,7 @@ public class PlayerControl : NetworkBehaviour
             CmdOnTurnChanged(turn);
             int State = Random.Range(0, 2);
             int hitChance = 0;
-            if(pass)
+            if (pass)
                 hitChance = Random.Range(0, 4);
             else
                 hitChance = Random.Range(0, 2);
@@ -958,5 +1010,48 @@ public class PlayerControl : NetworkBehaviour
             canvasText.text = canvas.ToString();
     }
 
+    // Chat Functions
 
+    public void onChatButtonClick()
+    {
+        ChatPanel.SetActive(true);
+    }
+
+    public void onExitButtonClick()
+    {
+        chatInput.text = "";
+        ChatPanel.SetActive(false);
+    }
+
+    public void onSendButtonClick()
+    {
+        if (!string.IsNullOrEmpty(chatInput.text))
+        {
+            CmdSendMessage(chatInput.text);
+        }
+    }
+
+    void onEndEditChatInput(string text)
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            onSendButtonClick();
+        }
+    }
+
+    void OnChatMessageSent(string message)
+    {
+        GameObject o = Instantiate(Resources.Load("Message")) as GameObject;
+        o.GetComponent<Message>().Populate("", message);
+
+        o.transform.SetParent(ChatContent.transform);
+        chatInput.text = "";
+        //scrollbar.value = 0;
+    }
+
+    [Command]
+    void CmdSendMessage(string message)
+    {
+        chatMessage = message;
+    }
 }
