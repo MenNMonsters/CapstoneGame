@@ -603,13 +603,6 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.895f), Screen.width * (0.1f), Screen.height * (0.065f)), "Move"))
-                {
-                    RpcChangeToMove();
-                    CmdOnCanvasChanged(false);
-                }
-
-
                 if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL") && !turnChoosed)
                 {
                     if (currentState == BattleStates.PLAYERCHOICE)
