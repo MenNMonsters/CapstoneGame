@@ -113,6 +113,7 @@ public class PlayerControl : NetworkBehaviour
     bool p4Enabled = false;
     bool normal = false;
     bool magic = false;
+    bool pass = false;
 
     [SyncVar]
     bool turnChoosed = false;
@@ -568,7 +569,7 @@ public class PlayerControl : NetworkBehaviour
                         CmdOnCanvasChanged(true);
                     }
 
-                    if (Collision.bossCollide && !bossDefeated)
+                    if (Collision.bossCollide && !bossDefeated && normalDefeated)
                     {
                         RpcChangeToBoos();
                         CmdOnCanvasChanged(true);
@@ -588,16 +589,17 @@ public class PlayerControl : NetworkBehaviour
                 {
                     normal = false;
                     magic = false;
+                    pass = false;
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS") && !turnChoosed)
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Dodge") && !turnChoosed)
                 {
 
                     if (currentState != BattleStates.LOSE && currentState != BattleStates.WIN && currentState == BattleStates.PLAYERCHOICE)
                     {
-
+                        pass = true;
                         turnChoosed = true;
-                        turn = pName + "chooses pass turn!";
+                        turn = pName + "chose to dodge!";
                         CmdOnTurnChanged(turn);
                         CmdOnCountChanged();
                     }
@@ -614,11 +616,11 @@ public class PlayerControl : NetworkBehaviour
                         {
                             enemyHealth = 0;
                         }
-                        
-                            turn = pName + ":chooses normal attack!";
-                            CmdOnTurnChanged(turn);
-                            CmdOnCountChanged();
-                        
+
+                        turn = pName + ":chose normal attack!";
+                        CmdOnTurnChanged(turn);
+                        CmdOnCountChanged();
+
 
                     }
                 }
@@ -642,7 +644,7 @@ public class PlayerControl : NetworkBehaviour
                                 enemyHealth = 0;
                             }
 
-                            turn = pName + ":chooses magical attack!";
+                            turn = pName + ":chose magical attack!";
                             CmdOnTurnChanged(turn);
                             CmdOnCountChanged();
                         }
@@ -731,26 +733,39 @@ public class PlayerControl : NetworkBehaviour
             turn = pName + ":Enemy Turn";
             CmdOnTurnChanged(turn);
             int State = Random.Range(0, 2);
+            int hitChance = 0;
+            if(pass)
+                hitChance = Random.Range(0, 4);
+            else
+                hitChance = Random.Range(0, 2);
             yield return new WaitForSeconds(1);
 
-            if (State == 1)
+            if (hitChance == 1)
             {
-                if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
+                if (State == 1)
                 {
-                    turn = pName + ":Eenmy uses magical attack";
-                    CmdOnPlayerHealthChanged(20);
-                    CmdOnEnemyEnergyChanged(ENEMY_MAGIC_CONSUME);
-                    if (enemyEnergy <= 0)
+                    if (enemyEnergy >= ENEMY_MAGIC_CONSUME)
                     {
-                        enemyEnergy = 0;
+                        turn = pName + ":Eenmy used magical attack";
+
+                        CmdOnPlayerHealthChanged(20);
+
+                        CmdOnEnemyEnergyChanged(ENEMY_MAGIC_CONSUME);
+                        if (enemyEnergy <= 0)
+                        {
+                            enemyEnergy = 0;
+                        }
                     }
                 }
+                else
+                {
+                    turn = pName + ":Enemy used normal attack";
+
+                    CmdOnPlayerHealthChanged(5);
+
+                }
             }
-            else
-            {
-                turn = pName + ":Enemy uses normal attack";
-                CmdOnPlayerHealthChanged(5);
-            }
+
             CmdOnTurnChanged(turn);
             yield return new WaitForSeconds(1);
 

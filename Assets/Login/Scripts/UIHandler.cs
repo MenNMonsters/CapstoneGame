@@ -184,7 +184,7 @@ public class UIHandler : MonoBehaviour {
                                auth.CurrentUser.ProviderId));
         UpdateUserProfile(newDisplayName: newDisplayName);
 				UnityAndroidExtras.instance.makeToast("Successfuly Created User and Signed in",1);
-				SceneManager.LoadScene(3);
+				SceneManager.LoadScene(2);
       }
     }
   }
@@ -239,7 +239,7 @@ public class UIHandler : MonoBehaviour {
     EnableUI();
     if(LogTaskCompletion(authTask, "Sign-in"))
 			UnityAndroidExtras.instance.makeToast("Signed In",1);
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(2);
     }
 
   public void ReloadUser() {
