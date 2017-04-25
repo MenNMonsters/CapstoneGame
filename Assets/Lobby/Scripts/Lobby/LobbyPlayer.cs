@@ -26,7 +26,10 @@ namespace Prototype.NetworkLobby
         public Button removePlayerButton;
         public bool OKTOGO = false;
 
-        public GameObject localIcone;
+		public GameObject CharacterErrorPanel;
+		public Button ExitButton;
+        
+		public GameObject localIcone;
         public GameObject remoteIcone;
         private Object semaphore = new Object();
 
@@ -79,6 +82,8 @@ namespace Prototype.NetworkLobby
                 SetupOtherPlayer();
             }
             
+			CharacterErrorPanel = GameObject.Find ("CharacterErrorMessagePanel");
+			CharacterErrorPanel.SetActive(false);
 
             //setup the player data on UI. The value are SyncVar so the player
             //will be created with the right value currently on server
@@ -269,10 +274,11 @@ namespace Prototype.NetworkLobby
 
         public void OnReadyClicked()
         {
-            if (OKTOGO)
-            {
-                SendReadyToBeginMessage();
-            }
+			if (OKTOGO) {
+				SendReadyToBeginMessage ();
+			} else {
+				showCharacterErrorPanel ();
+			}
             
         }
 
@@ -403,6 +409,14 @@ namespace Prototype.NetworkLobby
 
         }
 
+		public void showCharacterErrorPanel(){
+			CharacterErrorPanel.SetActive (true);
+		}
+
+		public void onPanelExitButtonClick(){
+			CharacterErrorPanel.SetActive (false);
+		}
+
         //Cleanup thing when get destroy (which happen when client kick or disconnect)
         public void OnDestroy()
         {
@@ -433,5 +447,7 @@ namespace Prototype.NetworkLobby
         {
             return characterButton;
         }*/
+
+
     }
 }
