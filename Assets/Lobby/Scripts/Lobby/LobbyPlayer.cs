@@ -68,12 +68,13 @@ namespace Prototype.NetworkLobby
         {
             base.OnClientEnterLobby();
 
-            if (LobbyManager.s_Singleton != null) LobbyManager.s_Singleton.OnPlayersNumberModified(1);
+			if (LobbyManager.s_Singleton != null) LobbyManager.s_Singleton.OnPlayersNumberModified(1);
 
             LobbyPlayerList._instance.AddPlayer(this);
             LobbyPlayerList._instance.DisplayDirectServerWarning(isServer && LobbyManager.s_Singleton.matchMaker == null);
 
-            if (isLocalPlayer)
+
+			if (isLocalPlayer)
             {
                 SetupLocalPlayer();
             }
@@ -81,9 +82,6 @@ namespace Prototype.NetworkLobby
             {
                 SetupOtherPlayer();
             }
-            
-			CharacterErrorPanel = GameObject.Find ("CharacterErrorMessagePanel");
-			CharacterErrorPanel.SetActive(false);
 
             //setup the player data on UI. The value are SyncVar so the player
             //will be created with the right value currently on server
@@ -172,6 +170,9 @@ namespace Prototype.NetworkLobby
             readyButton.onClick.RemoveAllListeners();
             readyButton.onClick.AddListener(OnReadyClicked);
 
+			CharacterErrorPanel = GameObject.Find ("CharacterErrorMessagePanel");
+			CharacterErrorPanel.SetActive(false);
+
             /*
             LobbyPlayerList._instance.getButton().onClick.RemoveAllListeners();
             LobbyPlayerList._instance.getButton().onClick.AddListener(OnButtonClicked);*/
@@ -205,17 +206,16 @@ namespace Prototype.NetworkLobby
 
         public override void OnClientReady(bool readyState)
         {
-            if (readyState)
-            {
-                ChangeReadyButtonColor(TransparentColor);
+			if (readyState) {
+				ChangeReadyButtonColor (TransparentColor);
 
-                Text textComponent = readyButton.transform.GetChild(0).GetComponent<Text>();
-                textComponent.text = "READY";
-                textComponent.color = ReadyColor;
-                readyButton.interactable = false;
-                colorButton.interactable = false;
-                nameInput.interactable = false;
-            }
+				Text textComponent = readyButton.transform.GetChild (0).GetComponent<Text> ();
+				textComponent.text = "READY";
+				textComponent.color = ReadyColor;
+				readyButton.interactable = false;
+				colorButton.interactable = false;
+				nameInput.interactable = false;
+			}
             else
             {
                 ChangeReadyButtonColor(isLocalPlayer ? JoinColor : NotReadyColor);
@@ -257,10 +257,9 @@ namespace Prototype.NetworkLobby
         public void OnReadyCharacterClick(bool boolean)
         {
             hasCharacter = boolean;
-            if (hasCharacter)
-            {
-                OKTOGO = true;
-            }
+			if (hasCharacter) {
+				OKTOGO = true;
+			} 
         }
 
         //===== UI Handler
@@ -276,10 +275,10 @@ namespace Prototype.NetworkLobby
         {
 			if (OKTOGO) {
 				SendReadyToBeginMessage ();
-			} else {
-				showCharacterErrorPanel ();
+			} 
+			else {
+				CharacterErrorPanel.SetActive(true);
 			}
-            
         }
 
         public void OnNameChanged(string str)
@@ -408,10 +407,6 @@ namespace Prototype.NetworkLobby
             
 
         }
-
-		public void showCharacterErrorPanel(){
-			CharacterErrorPanel.SetActive (true);
-		}
 
 		public void onPanelExitButtonClick(){
 			CharacterErrorPanel.SetActive (false);
