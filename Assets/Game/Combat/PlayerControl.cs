@@ -631,6 +631,32 @@ public class PlayerControl : NetworkBehaviour
             {
                 if (canvasText != null && !bool.Parse(canvasText.text))
                 {
+					if (GUI.Button(new Rect(Screen.width * (50f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Left"))
+					{
+						
+						playerBox.transform.Translate(-0.5f, 0, 0);
+					}
+					if (GUI.Button(new Rect(Screen.width * (70f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Right"))
+					{
+
+
+
+						playerBox.transform.Translate(0.5f, 0, 0);
+					}
+					if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.767f), Screen.width * (0.1f), Screen.height * (0.065f)), "Up"))
+					{
+
+
+
+						playerBox.transform.Translate(0, 0.5f, 0);
+					}
+					if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Down"))
+					{
+
+
+
+						playerBox.transform.Translate(0, -0.5f, 0);
+					}
 
                     if (Collision.normalCollide && !normalDefeated)
                     {
