@@ -1087,7 +1087,7 @@ public class PlayerControl : NetworkBehaviour
         GameObject o = Instantiate(Resources.Load("Message")) as GameObject;
         Debug.Log(message.name);
         Debug.Log(message.message);
-        o.GetComponent<Message>().Populate(message.name, message.message);
+        o.GetComponent<Message>().Populate(message.name + ":", message.message);
 
         o.transform.SetParent(ChatContent.transform);
         chatInput.text = "";
