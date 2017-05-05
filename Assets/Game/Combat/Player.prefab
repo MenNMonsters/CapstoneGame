@@ -116,7 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edcb325930954941b4c1c5f5bd507bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
+  myTexture: {fileID: 2800000, guid: 846473c170fa84ad1a5a62e7b44ac43f, type: 3}
+  playerBox: {fileID: 0}
+  characterImg: {fileID: 0}
   playerUniqueIdentity: 
   numOfPlayer: 0
   pName: 
+  characterName: 

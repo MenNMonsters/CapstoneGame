@@ -27,6 +27,8 @@ public class PlayerControl : NetworkBehaviour
     Button SendButton;
     Scrollbar scrollbar;
 
+    public Texture2D myTexture;
+
     ChatObjects co;
     GameObject messagePrefab;
 
@@ -190,8 +192,6 @@ public class PlayerControl : NetworkBehaviour
         normalRoom = GameObject.Find("Normal Door");
         bossRoom = GameObject.Find("Boss Door");
 
-        Debug.Log(characterName);
-
         p1 = GameObject.Find("PlayerInfoContainer1");
 
         p2 = GameObject.Find("PlayerInfoContainer2");
@@ -201,6 +201,7 @@ public class PlayerControl : NetworkBehaviour
         p4 = GameObject.Find("PlayerInfoContainer4");
         enemy = GameObject.Find("EnemyInfoContainer");
         container = GameObject.Find("Container");
+
 
         if (isLocalPlayer)
         {
@@ -220,178 +221,196 @@ public class PlayerControl : NetworkBehaviour
             if (string.IsNullOrEmpty(pName))
             {
                 co.localPlayerName = "";
-            } else
+            }
+            else
             {
                 co.localPlayerName = pName;
             }
-            
+
             playerNameText = GameObject.Find("Name").GetComponent<Text>();
             if (playerNameText != null)
             {
                 playerNameText.text = "You are " + pName;
             }
         }
-        Debug.Log(co.localPlayerName);
 
         id = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
 
-        if (numOfPlayer == 1)
-        {
-            PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            PlayerPortraitText.text = pName;
+        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        PlayerPortraitText.text = pName;
 
-            OnPlayerName(pName);
+        OnPlayerName(pName);
 
-            //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-            //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-            //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-            //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-            //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-            characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-            playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-            playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-            turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
 
-        }
+        //if (numOfPlayer == 1)
+        //{
+        //    PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    PlayerPortraitText.text = pName;
 
-        if (numOfPlayer == 2)
-        {
+        //    OnPlayerName(pName);
 
-            if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 3)
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //    //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //    //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //    //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //    //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //    //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-                OnPlayerName(pName);
+        //    characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //    playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //    playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //    turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //}
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            }
-            else
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //if (numOfPlayer == 2)
+        //{
 
-                OnPlayerName(pName);
+        //    if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 3)
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        OnPlayerName(pName);
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-            }
-        }
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-        if (numOfPlayer == 3)
-        {
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    }
+        //    else
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
 
-            if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 4)
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //        OnPlayerName(pName);
 
-                OnPlayerName(pName);
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //    }
+        //}
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            }
-            else
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //if (numOfPlayer == 3)
+        //{
 
-                OnPlayerName(pName);
+        //    if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 4)
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        OnPlayerName(pName);
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-            }
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-        }
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    }
+        //    else
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
 
-        if (numOfPlayer == 4)
-        {
+        //        OnPlayerName(pName);
 
-            if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 5)
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
 
-                OnPlayerName(pName);
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //    }
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //}
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
-            }
-            else
-            {
-                PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                PlayerPortraitText.text = pName;
+        //if (numOfPlayer == 4)
+        //{
 
-                OnPlayerName(pName);
+        //    if (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) == 5)
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
 
-                //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
-                //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
-                //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        OnPlayerName(pName);
 
-                characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-                playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
-                turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
-            }
-        }
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer)).GetComponent<Text>();
+        //    }
+        //    else
+        //    {
+        //        PlayerPortraitText = GameObject.Find("PlayerName" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        PlayerPortraitText.text = pName;
+
+        //        OnPlayerName(pName);
+
+        //        //playerHealthText = GameObject.Find("PlayerHealth" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerEnergyText = GameObject.Find("PlayerEnergy" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+        //        //playerHealthImage = GameObject.Find("PlayerHealthBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //playerEnergyImage = GameObject.Find("PlayerEnergyBar" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Image>();
+        //        //turnText = GameObject.Find("Turn" + int.Parse(GetComponent<NetworkIdentity>().netId.ToString())).GetComponent<Text>();
+
+        //        characterImage = GameObject.Find("PlayerPortrait" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerHealthText = GameObject.Find("PlayerHealth" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerEnergyText = GameObject.Find("PlayerEnergy" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //        playerHealthImage = GameObject.Find("PlayerHealthBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        playerEnergyImage = GameObject.Find("PlayerEnergyBar" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Image>();
+        //        turnText = GameObject.Find("Turn" + (int.Parse(GetComponent<NetworkIdentity>().netId.ToString()) - numOfPlayer - 1)).GetComponent<Text>();
+        //    }
+        //}
 
 
         turn = pName + ":Your Turn";
@@ -424,6 +443,8 @@ public class PlayerControl : NetworkBehaviour
         currentState = BattleStates.PLAYERCHOICE;
 
         characterImage.sprite = Resources.Load<Sprite>(characterName) as Sprite;
+        if(isServer)
+            RpcChangeBoxImage();
 
         container.GetComponent<CanvasGroup>().alpha = 0;
 
@@ -434,6 +455,15 @@ public class PlayerControl : NetworkBehaviour
     {
         GetNetIdentity();
         SetIdentity();
+    }
+
+    [ClientRpc]
+    void RpcChangeBoxImage()
+    {
+        
+        myTexture = Resources.Load<Texture2D>(characterName);
+        if (playerBox != null)
+            playerBox.gameObject.GetComponent<Renderer>().material.mainTexture = myTexture;
     }
 
     // Update is called once per frame
@@ -449,28 +479,35 @@ public class PlayerControl : NetworkBehaviour
         //        RpcOnNumOfPlayerChanged(NetworkServer.connections.Count);
         //}
 
-        if (p2 != null && !p2Enabled && numOfPlayer == 2)
-        {
-            p2.SetActive(true);
-            p2Enabled = true;
-        }
+        //if (p2 != null && !p2Enabled && numOfPlayer == 2)
+        //{
+        //    p2.SetActive(true);
+        //    p2Enabled = true;
+        //}
 
-        if (p3 != null && !p3Enabled && numOfPlayer == 3)
-        {
-            p3.SetActive(true);
-            p3Enabled = true;
-        }
+        //if (p3 != null && !p3Enabled && numOfPlayer == 3)
+        //{
+        //    p3.SetActive(true);
+        //    p3Enabled = true;
+        //}
 
-        if (p4 != null && !p4Enabled && numOfPlayer == 4)
-        {
-            p4.SetActive(true);
-            p4Enabled = true;
-        }
+        //if (p4 != null && !p4Enabled && numOfPlayer == 4)
+        //{
+        //    p4.SetActive(true);
+        //    p4Enabled = true;
+        //}
 
         playerHealthImage.fillAmount = (float)int.Parse(playerHealthText.text.ToString()) / PLAYER_HEALTH;
         playerEnergyImage.fillAmount = (float)int.Parse(playerEnergyText.text.ToString()) / PLAYER_ENERGY;
-        enemyHealthImage.fillAmount = (float)int.Parse(enemyHealthText.text.ToString()) / ENEMY_HEALTH;
-        enemyEnergyImage.fillAmount = (float)int.Parse(enemyEnergyText.text.ToString()) / ENEMY_ENERGY;
+        if (!normalDefeated)
+        {
+            enemyHealthImage.fillAmount = (float)int.Parse(enemyHealthText.text.ToString()) / ENEMY_HEALTH;
+            enemyEnergyImage.fillAmount = (float)int.Parse(enemyEnergyText.text.ToString()) / ENEMY_ENERGY;
+        }else
+        {
+            enemyHealthImage.fillAmount = (float)int.Parse(enemyHealthText.text.ToString()) / 400;
+            enemyEnergyImage.fillAmount = (float)int.Parse(enemyEnergyText.text.ToString()) / 400;
+        }
 
 
 
@@ -481,6 +518,7 @@ public class PlayerControl : NetworkBehaviour
         }
 
     }
+
 
     [ClientRpc]
     void RpcOnNumOfPlayerChanged(int value)
@@ -591,11 +629,17 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [ClientRpc]
+    void RpcMoveBox(float x, float y)
+    {
+        playerBox.transform.Translate(x, y, 0);
+    }
+
+    [ClientRpc]
     void RpcChangeToBoos()
     {
-        enemyHealth = 600;
-        enemyEnergy = 600;
-        enemyHealth2 = 600;
+        enemyHealth = 400;
+        enemyEnergy = 400;
+        enemyHealth2 = 400;
         OnEnemyHealth2Changed(enemyHealth2);
         OnEnemyHealthChanged(enemyHealth);
         OnEnemyEnergyChanged(enemyEnergy);
@@ -618,6 +662,12 @@ public class PlayerControl : NetworkBehaviour
 
     }
 
+    [Command]
+    void CmdPlayerCountChage(int count)
+    {
+        playerCount = count;
+        playerCountText.text = playerCount.ToString();
+    }
 
 
     void OnGUI()
@@ -631,32 +681,27 @@ public class PlayerControl : NetworkBehaviour
             {
                 if (canvasText != null && !bool.Parse(canvasText.text))
                 {
-					if (GUI.Button(new Rect(Screen.width * (50f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Left"))
-					{
-						
-						playerBox.transform.Translate(-0.5f, 0, 0);
-					}
-					if (GUI.Button(new Rect(Screen.width * (70f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Right"))
-					{
 
+                    if (GUI.Button(new Rect(Screen.width * (50f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Left"))
+                    {
 
+                        RpcMoveBox(-0.5f, 0);
+                    }
+                    if (GUI.Button(new Rect(Screen.width * (70f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Right"))
+                    {
 
-						playerBox.transform.Translate(0.5f, 0, 0);
-					}
-					if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.767f), Screen.width * (0.1f), Screen.height * (0.065f)), "Up"))
-					{
+                        RpcMoveBox(0.5f, 0);
+                    }
+                    if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.767f), Screen.width * (0.1f), Screen.height * (0.065f)), "Up"))
+                    {
 
+                        RpcMoveBox(0, 0.5f);
+                    }
+                    if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Down"))
+                    {
 
-
-						playerBox.transform.Translate(0, 0.5f, 0);
-					}
-					if (GUI.Button(new Rect(Screen.width * (60f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Down"))
-					{
-
-
-
-						playerBox.transform.Translate(0, -0.5f, 0);
-					}
+                        RpcMoveBox(0, -0.5f);
+                    }
 
                     if (Collision.normalCollide && !normalDefeated)
                     {
@@ -677,17 +722,27 @@ public class PlayerControl : NetworkBehaviour
         }
         if (isLocalPlayer)
         {
+
             if (canvasText != null && bool.Parse(canvasText.text))
             {
+
+                if (isServer)
+                {
+                    playerCount = int.Parse(GUI.TextField(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.895f), Screen.width * (0.1f), Screen.height * (0.065f)), playerCount.ToString()));
+                }
+
+                playerCount = int.Parse(playerCountText.text);
 
                 if (!turnChoosed)
                 {
                     normal = false;
                     magic = false;
                     pass = false;
+                    count = playerCount;
+                    OnCountChanged(count);
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "Dodge") && !turnChoosed)
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Dodge") && !turnChoosed)
                 {
 
                     if (currentState != BattleStates.LOSE && currentState != BattleStates.WIN && currentState == BattleStates.PLAYERCHOICE)
@@ -700,7 +755,7 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL") && !turnChoosed)
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (0.635f), Screen.width * (0.1f), Screen.height * (0.065f)), "NORMAL") && !turnChoosed)
                 {
                     if (currentState == BattleStates.PLAYERCHOICE)
                     {
@@ -720,7 +775,7 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
 
-                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.765f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical") && !turnChoosed)
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.7f), Screen.width * (0.1f), Screen.height * (0.065f)), "Magical") && !turnChoosed)
                 {
                     if (currentState == BattleStates.PLAYERCHOICE)
                     {
@@ -746,7 +801,7 @@ public class PlayerControl : NetworkBehaviour
                     }
                 }
 
-                if (int.Parse(countText.text) == 0)
+                if (GUI.Button(new Rect(Screen.width * (85f / 100f), Screen.height * (1f * 0.83f), Screen.width * (0.1f), Screen.height * (0.065f)), "PASS") || int.Parse(countText.text) == 0)
                 {
                     currentState = BattleStates.ENEMYCHOICE;
                 }
@@ -948,7 +1003,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdOnResetCount()
     {
-        count = playerCount;
+        count = int.Parse(playerCountText.text);
         countText.text = count.ToString();
     }
 
